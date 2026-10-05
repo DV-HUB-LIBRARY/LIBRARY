@@ -18,7 +18,7 @@ function Dropdown.new(parent, options, Config, Utils)
     
     local label = Instance.new("TextLabel")
     label.Name = "Label"
-    label.Size = UDim2.new(1, -70, 1, 0)
+    label.Size = UDim2.new(1, -140, 1, 0)
     label.Position = UDim2.new(0, 12, 0, 0)
     label.BackgroundTransparency = 1
     label.Font = Config.Fonts.Body
@@ -32,7 +32,7 @@ function Dropdown.new(parent, options, Config, Utils)
     local valueLabel = Instance.new("TextLabel")
     valueLabel.Name = "ValueLabel"
     valueLabel.Size = UDim2.new(0, 100, 1, 0)
-    valueLabel.Position = UDim2.new(1, -120, 0, 0)
+    valueLabel.Position = UDim2.new(1, -126, 0, 0)
     valueLabel.BackgroundTransparency = 1
     valueLabel.Font = Config.Fonts.Body
     valueLabel.Text = "..."
@@ -69,7 +69,7 @@ function Dropdown.new(parent, options, Config, Utils)
     list.BackgroundColor3 = Config.Colors.Base
     list.BorderSizePixel = 0
     list.Visible = false
-    list.ZIndex = 50
+    list.ZIndex = 100
     list.Parent = container
     Utils.corner(list, Config.Sizes.RadiusSmall)
     Utils.stroke(list, Config.Colors.Border, 1)
@@ -103,7 +103,7 @@ function Dropdown.new(parent, options, Config, Utils)
         
         for _, val in ipairs(values) do
             local optBtn = Instance.new("TextButton")
-            optBtn.Name = tostring(val)
+            optBtn.Name = "Opt_" .. tostring(val)
             optBtn.Size = UDim2.new(1, 0, 0, 26)
             optBtn.BackgroundColor3 = (val == currentValue) and Config.Colors.Accent or Config.Colors.Card
             optBtn.Text = tostring(val)
@@ -112,7 +112,7 @@ function Dropdown.new(parent, options, Config, Utils)
             optBtn.TextSize = Config.Sizes.BodySize
             optBtn.BorderSizePixel = 0
             optBtn.AutoButtonColor = false
-            optBtn.ZIndex = 51
+            optBtn.ZIndex = 101
             optBtn.Parent = list
             Utils.corner(optBtn, Config.Sizes.RadiusSmall)
             
@@ -149,14 +149,14 @@ function Dropdown.new(parent, options, Config, Utils)
         arrow.Text = isOpen and "▴" or "▾"
     end)
     
-    function container:GetValue()
-        return currentValue
-    end
-    
-    function container:SetValue(val)
+    function container:UpdateValue(val)
         currentValue = val
         valueLabel.Text = tostring(val)
         rebuildList()
+    end
+    
+    function container:FetchValue()
+        return currentValue
     end
     
     return container

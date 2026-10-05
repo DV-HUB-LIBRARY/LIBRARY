@@ -85,12 +85,12 @@ function Toggle.new(parent, options, Config, Utils)
         end
     end)
     
-    function container:UpdateValue(newVal)
+    container.UpdateValue = function(self, newVal)
         value = newVal and true or false
         render()
     end
     
-    function container:FetchValue()
+    container.FetchValue = function(self)
         return value
     end
     

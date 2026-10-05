@@ -149,13 +149,13 @@ function Dropdown.new(parent, options, Config, Utils)
         arrow.Text = isOpen and "▴" or "▾"
     end)
     
-    function container:UpdateValue(val)
+    container.UpdateValue = function(self, val)
         currentValue = val
         valueLabel.Text = tostring(val)
         rebuildList()
     end
     
-    function container:FetchValue()
+    container.FetchValue = function(self)
         return currentValue
     end
     

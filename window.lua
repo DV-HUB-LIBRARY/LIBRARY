@@ -1,39 +1,22 @@
 local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
 local Window = {}
 
-Window.__index = Window
-
-local function getConfig()
-    local ok, cfg = pcall(function()
-        return loadstring(game:HttpGet("https://raw.githubusercontent.com/DV-HUB-LIBRARY/LIBRARY/main/config.lua"))()
-    end)
-    if ok and cfg then return cfg end
-    return nil
-end
-
-local function getUtils()
-    local ok, u = pcall(function()
-        return loadstring(game:HttpGet("https://raw.githubusercontent.com/DV-HUB-LIBRARY/LIBRARY/main/utils.lua"))()
-    end)
-    if ok and u then return u end
-    return nil
-end
-
 function Window.new(options)
     options = options or {}
     
-    local Config = options.Config or getConfig()
-    local Utils = options.Utils or getUtils()
+    local BASE = "https://raw.githubusercontent.com/DV-HUB-LIBRARY/LIBRARY/main"
+    
+    local Config = options.Config or loadstring(game:HttpGet(BASE .. "/config.lua"))()
+    local Utils = options.Utils or loadstring(game:HttpGet(BASE .. "/utils.lua"))()
     
     if not Config or not Utils then
         warn("[DVLlib] Config atau Utils gagal di-load!")
         return nil
     end
     
-    local self = setmetatable({}, Window)
+    local self = {}
     
     self.Config = Config
     self.Utils = Utils
@@ -191,61 +174,36 @@ function Window.new(options)
     self.Content = content
     
     self.BtnClose.MouseButton1Click:Connect(function()
-        self:Destroy()
+        if self.ScreenGui then
+            self.ScreenGui:Destroy()
+        end
     end)
     
     self.BtnMin.MouseButton1Click:Connect(function()
-        self:ToggleMinimize()
+        self.IsMinimized = not self.IsMinimized
+        if self.IsMinimized then
+            self.Content.Visible = false
+            self.Tabbar.Visible = false
+            TweenService:Create(self.Frame, TweenInfo.new(0.2), {
+                Size = UDim2.new(0, self.Size.X.Offset, 0, Config.Sizes.TopbarH)
+            }):Play()
+            self.BtnMin.Text = "⊕"
+        else
+            self.Content.Visible = true
+            self.Tabbar.Visible = true
+            TweenService:Create(self.Frame, TweenInfo.new(0.2), {
+                Size = self.Size
+            }):Play()
+            self.BtnMin.Text = "−"
+        end
     end)
     
     self.BtnHide.MouseButton1Click:Connect(function()
-        self:Hide()
+        self.IsHidden = true
+        self.Frame.Visible = false
     end)
     
     return self
-end
-
-function Window:SetTitle(text)
-    self.Title.Text = text
-end
-
-function Window:SetSubtitle(text)
-    self.Subtitle.Text = text
-end
-
-function Window:ToggleMinimize()
-    self.IsMinimized = not self.IsMinimized
-    if self.IsMinimized then
-        self.Content.Visible = false
-        self.Tabbar.Visible = false
-        TweenService:Create(self.Frame, TweenInfo.new(0.2), {
-            Size = UDim2.new(0, self.Size.X.Offset, 0, self.Config.Sizes.TopbarH)
-        }):Play()
-        self.BtnMin.Text = "⊕"
-    else
-        self.Content.Visible = true
-        self.Tabbar.Visible = true
-        TweenService:Create(self.Frame, TweenInfo.new(0.2), {
-            Size = self.Size
-        }):Play()
-        self.BtnMin.Text = "−"
-    end
-end
-
-function Window:Hide()
-    self.IsHidden = true
-    self.Frame.Visible = false
-end
-
-function Window:Show()
-    self.IsHidden = false
-    self.Frame.Visible = true
-end
-
-function Window:Destroy()
-    if self.ScreenGui then
-        self.ScreenGui:Destroy()
-    end
 end
 
 return Window

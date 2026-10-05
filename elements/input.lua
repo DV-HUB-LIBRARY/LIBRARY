@@ -32,7 +32,6 @@ function Input.new(parent, options, Config, Utils)
     textbox.Parent = container
     
     textbox.Focused:Connect(function()
-        Utils.tween(container, {}, 0.1)
         container.BackgroundColor3 = Config.Colors.Card
     end)
     
@@ -49,11 +48,11 @@ function Input.new(parent, options, Config, Utils)
         end
     end)
     
-    function textbox:SetValue(val)
+    function textbox:UpdateValue(val)
         self.Text = tostring(val or "")
     end
     
-    function textbox:GetValue()
+    function textbox:FetchValue()
         return self.Text
     end
     

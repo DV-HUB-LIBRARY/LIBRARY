@@ -31,41 +31,19 @@ function Input.new(parent, options, Config, Utils)
     textbox.ZIndex = 15
     textbox.Parent = container
     
-    textbox.Focused:Connect(function()
-        container.BackgroundColor3 = Config.Colors.Card
-    end)
-    
     textbox.FocusLost:Connect(function()
-        container.BackgroundColor3 = options.BackgroundColor or Config.Colors.Base
         if options.OnSubmit then
             options.OnSubmit(textbox.Text)
         end
     end)
     
-    textbox:GetPropertyChangedSignal("Text"):Connect(function()
-        if options.OnChange then
+    if options.OnChange then
+        textbox:GetPropertyChangedSignal("Text"):Connect(function()
             options.OnChange(textbox.Text)
-        end
-    end)
-    
-    -- Memasang fungsi UpdateValue ke container dan textbox agar aman dipanggil
-    function container:UpdateValue(val)
-        textbox.Text = tostring(val or "")
+        end)
     end
     
-    function container:FetchValue()
-        return textbox.Text
-    end
-    
-    textbox.UpdateValue = function(_, val)
-        textbox.Text = tostring(val or "")
-    end
-    
-    textbox.FetchValue = function()
-        return textbox.Text
-    end
-    
-    return container
+    return textbox
 end
 
 return Input

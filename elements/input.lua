@@ -48,11 +48,11 @@ function Input.new(parent, options, Config, Utils)
         end
     end)
     
-    function textbox:UpdateValue(val)
+    textbox.UpdateValue = function(self, val)
         self.Text = tostring(val or "")
     end
     
-    function textbox:FetchValue()
+    textbox.FetchValue = function(self)
         return self.Text
     end
     

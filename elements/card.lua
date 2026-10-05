@@ -15,7 +15,7 @@ function Card.new(parent, options, Config, Utils)
     Utils.corner(card, options.Radius or Config.Sizes.Radius)
     Utils.stroke(card, options.StrokeColor or Config.Colors.Border, 1)
     
-    local padding = Utils.padding(card, options.Padding or Config.Sizes.Padding)
+    Utils.padding(card, options.Padding or Config.Sizes.Padding)
     
     local layout = Instance.new("UIListLayout")
     layout.FillDirection = Enum.FillDirection.Vertical

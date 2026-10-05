@@ -18,6 +18,7 @@ function Label.new(parent, options, Config, Utils)
     label.ZIndex = options.ZIndex or 15
     label.Parent = parent
     
+    -- Perbaikan agar fungsi UpdateText terbaca langsung pada objek label
     function label:UpdateText(text)
         self.Text = tostring(text)
     end

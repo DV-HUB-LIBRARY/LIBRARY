@@ -18,11 +18,11 @@ function Label.new(parent, options, Config, Utils)
     label.ZIndex = options.ZIndex or 15
     label.Parent = parent
     
-    function label:SetText(text)
-        self.Text = text
+    function label:UpdateText(text)
+        self.Text = tostring(text)
     end
     
-    function label:SetColor(color)
+    function label:UpdateColor(color)
         self.TextColor3 = color
     end
     

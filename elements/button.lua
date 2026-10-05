@@ -22,34 +22,34 @@ function Button.new(parent, options, Config, Utils)
     
     local normalColor = options.Color or Config.Colors.Card
     local hoverColor = options.HoverColor or Config.Colors.CardHover
+    local originalSize = options.Size or UDim2.new(1, -20, 0, Config.Sizes.ButtonH)
     
     Utils.hover(btn, normalColor, hoverColor)
     
     btn.MouseButton1Down:Connect(function()
         Utils.tween(btn, {
-            Size = UDim2.new(btn.Size.X.Scale, btn.Size.X.Offset - 2, btn.Size.Y.Scale, btn.Size.Y.Offset - 2)
+            Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset - 2, originalSize.Y.Scale, originalSize.Y.Offset - 2)
         }, 0.08)
     end)
     
     btn.MouseButton1Up:Connect(function()
-        Utils.tween(btn, {
-            Size = options.Size or UDim2.new(1, -20, 0, Config.Sizes.ButtonH)
-        }, 0.08)
+        Utils.tween(btn, { Size = originalSize }, 0.08)
     end)
     
     if options.OnClick then
         btn.MouseButton1Click:Connect(options.OnClick)
     end
     
-    function btn:SetText(text)
-        self.Text = text
+    function btn:UpdateText(text)
+        self.Text = tostring(text)
     end
     
-    function btn:SetColor(color)
+    function btn:UpdateColor(color)
         self.BackgroundColor3 = color
+        normalColor = color
     end
     
-    function btn:SetEnabled(enabled)
+    function btn:UpdateEnabled(enabled)
         self.Active = enabled
         self.AutoButtonColor = enabled
         if not enabled then

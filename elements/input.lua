@@ -48,15 +48,24 @@ function Input.new(parent, options, Config, Utils)
         end
     end)
     
-    textbox.UpdateValue = function(self, val)
-        self.Text = tostring(val or "")
+    -- Memasang fungsi UpdateValue ke container dan textbox agar aman dipanggil
+    function container:UpdateValue(val)
+        textbox.Text = tostring(val or "")
     end
     
-    textbox.FetchValue = function(self)
-        return self.Text
+    function container:FetchValue()
+        return textbox.Text
     end
     
-    return textbox
+    textbox.UpdateValue = function(_, val)
+        textbox.Text = tostring(val or "")
+    end
+    
+    textbox.FetchValue = function()
+        return textbox.Text
+    end
+    
+    return container
 end
 
 return Input

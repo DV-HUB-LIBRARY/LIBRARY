@@ -17,7 +17,6 @@ function Dropdown.new(parent, options, Config, Utils)
     Utils.stroke(container, Config.Colors.Border, 1)
     
     local label = Instance.new("TextLabel")
-    label.Name = "Label"
     label.Size = UDim2.new(1, -140, 1, 0)
     label.Position = UDim2.new(0, 12, 0, 0)
     label.BackgroundTransparency = 1
@@ -30,12 +29,11 @@ function Dropdown.new(parent, options, Config, Utils)
     label.Parent = container
     
     local valueLabel = Instance.new("TextLabel")
-    valueLabel.Name = "ValueLabel"
     valueLabel.Size = UDim2.new(0, 100, 1, 0)
     valueLabel.Position = UDim2.new(1, -126, 0, 0)
     valueLabel.BackgroundTransparency = 1
     valueLabel.Font = Config.Fonts.Body
-    valueLabel.Text = "..."
+    valueLabel.Text = tostring(options.Default or "...")
     valueLabel.TextColor3 = Config.Colors.Muted
     valueLabel.TextSize = Config.Sizes.BodySize
     valueLabel.TextXAlignment = Enum.TextXAlignment.Right
@@ -43,19 +41,17 @@ function Dropdown.new(parent, options, Config, Utils)
     valueLabel.Parent = container
     
     local arrow = Instance.new("TextLabel")
-    arrow.Name = "Arrow"
     arrow.Size = UDim2.new(0, 20, 1, 0)
     arrow.Position = UDim2.new(1, -26, 0, 0)
     arrow.BackgroundTransparency = 1
     arrow.Font = Config.Fonts.Title
-    arrow.Text = "▾"
+    arrow.Text = "v"
     arrow.TextColor3 = Config.Colors.Muted
     arrow.TextSize = 12
     arrow.ZIndex = 15
     arrow.Parent = container
     
     local button = Instance.new("TextButton")
-    button.Name = "ClickArea"
     button.Size = UDim2.new(1, 0, 1, 0)
     button.BackgroundTransparency = 1
     button.Text = ""
@@ -63,7 +59,6 @@ function Dropdown.new(parent, options, Config, Utils)
     button.Parent = container
     
     local list = Instance.new("Frame")
-    list.Name = "OptionsList"
     list.Size = UDim2.new(1, 0, 0, 0)
     list.Position = UDim2.new(0, 0, 1, 4)
     list.BackgroundColor3 = Config.Colors.Base
@@ -103,7 +98,6 @@ function Dropdown.new(parent, options, Config, Utils)
         
         for _, val in ipairs(values) do
             local optBtn = Instance.new("TextButton")
-            optBtn.Name = "Opt_" .. tostring(val)
             optBtn.Size = UDim2.new(1, 0, 0, 26)
             optBtn.BackgroundColor3 = (val == currentValue) and Config.Colors.Accent or Config.Colors.Card
             optBtn.Text = tostring(val)
@@ -116,23 +110,12 @@ function Dropdown.new(parent, options, Config, Utils)
             optBtn.Parent = list
             Utils.corner(optBtn, Config.Sizes.RadiusSmall)
             
-            optBtn.MouseEnter:Connect(function()
-                if val ~= currentValue then
-                    optBtn.BackgroundColor3 = Config.Colors.CardHover
-                end
-            end)
-            optBtn.MouseLeave:Connect(function()
-                if val ~= currentValue then
-                    optBtn.BackgroundColor3 = Config.Colors.Card
-                end
-            end)
-            
             optBtn.MouseButton1Click:Connect(function()
                 currentValue = val
                 valueLabel.Text = tostring(val)
                 isOpen = false
                 list.Visible = false
-                arrow.Text = "▾"
+                arrow.Text = "v"
                 rebuildList()
                 if options.OnSelect then
                     options.OnSelect(val)
@@ -146,18 +129,8 @@ function Dropdown.new(parent, options, Config, Utils)
     button.MouseButton1Click:Connect(function()
         isOpen = not isOpen
         list.Visible = isOpen
-        arrow.Text = isOpen and "▴" or "▾"
+        arrow.Text = isOpen and "^" or "v"
     end)
-    
-    function container:UpdateValue(val)
-        currentValue = val
-        valueLabel.Text = tostring(val)
-        rebuildList()
-    end
-    
-    function container:FetchValue()
-        return currentValue
-    end
     
     return container
 end

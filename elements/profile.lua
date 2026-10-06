@@ -1,3 +1,5 @@
+local RunService = game:GetService("RunService")
+
 local Profile = {}
 
 function Profile.new(parent, options, Config, Utils)
@@ -8,16 +10,38 @@ function Profile.new(parent, options, Config, Utils)
     local userId = options.UserId or "0"
     local role = options.Role or "unknown"
     
-    local roleColors = {
-        owner = Config.Colors.Owner,
-        admin = Config.Colors.Admin,
-        vip = Config.Colors.VIP,
-        user = Config.Colors.User,
+    local roleStatic = {
         pending = Config.Colors.Warning,
         expired = Config.Colors.Warning,
         banned = Config.Colors.Danger,
         denied = Config.Colors.Danger,
         unknown = Config.Colors.Muted,
+    }
+    
+    local roleRainbow = {
+        owner = { colors = {
+            Color3.fromRGB(255, 0, 0),
+            Color3.fromRGB(255, 255, 0),
+            Color3.fromRGB(0, 255, 0),
+            Color3.fromRGB(0, 255, 255),
+            Color3.fromRGB(0, 100, 255),
+            Color3.fromRGB(255, 0, 255),
+        }, speed = 1.5 },
+        admin = { colors = {
+            Color3.fromRGB(100, 180, 255),
+            Color3.fromRGB(20, 20, 30),
+            Color3.fromRGB(100, 180, 255),
+        }, speed = 2 },
+        vip = { colors = {
+            Color3.fromRGB(255, 215, 0),
+            Color3.fromRGB(30, 25, 10),
+            Color3.fromRGB(255, 215, 0),
+        }, speed = 2 },
+        user = { colors = {
+            Color3.fromRGB(100, 255, 150),
+            Color3.fromRGB(15, 25, 20),
+            Color3.fromRGB(100, 255, 150),
+        }, speed = 2 },
     }
     
     local roleTexts = {
@@ -32,8 +56,8 @@ function Profile.new(parent, options, Config, Utils)
         unknown = "❓ UNKNOWN",
     }
     
-    local roleColor = roleColors[role] or Config.Colors.Muted
     local roleText = roleTexts[role] or roleTexts.unknown
+    local initialColor = roleStatic[role] or (roleRainbow[role] and roleRainbow[role].colors[1]) or Config.Colors.Muted
     
     local card = Instance.new("Frame")
     card.Name = "ProfileCard"
@@ -44,7 +68,7 @@ function Profile.new(parent, options, Config, Utils)
     card.Parent = parent
     
     Utils.corner(card, Config.Sizes.Radius)
-    Utils.stroke(card, Config.Colors.Border, 1)
+    local cardStroke = Utils.stroke(card, initialColor, 1.5)
     
     local avatar = Instance.new("ImageLabel")
     avatar.Name = "Avatar"
@@ -56,7 +80,7 @@ function Profile.new(parent, options, Config, Utils)
     avatar.ZIndex = 15
     avatar.Parent = card
     Utils.corner(avatar, 999)
-    Utils.stroke(avatar, Config.Colors.Accent, 2)
+    local avatarStroke = Utils.stroke(avatar, initialColor, 2)
     
     local nameLbl = Instance.new("TextLabel")
     nameLbl.Name = "NameLbl"
@@ -88,13 +112,13 @@ function Profile.new(parent, options, Config, Utils)
     roleBadge.Name = "RoleBadge"
     roleBadge.Size = UDim2.new(0, 100, 0, 22)
     roleBadge.Position = UDim2.new(0, 88, 0, 54)
-    roleBadge.BackgroundColor3 = roleColor
+    roleBadge.BackgroundColor3 = initialColor
     roleBadge.BackgroundTransparency = 0.85
     roleBadge.BorderSizePixel = 0
     roleBadge.ZIndex = 15
     roleBadge.Parent = card
     Utils.corner(roleBadge, Config.Sizes.RadiusSmall)
-    Utils.stroke(roleBadge, roleColor, 1)
+    local badgeStroke = Utils.stroke(roleBadge, initialColor, 1)
     
     local roleLbl = Instance.new("TextLabel")
     roleLbl.Name = "RoleLbl"
@@ -103,20 +127,76 @@ function Profile.new(parent, options, Config, Utils)
     roleLbl.BackgroundTransparency = 1
     roleLbl.Font = Config.Fonts.Title
     roleLbl.Text = roleText
-    roleLbl.TextColor3 = roleColor
+    roleLbl.TextColor3 = initialColor
     roleLbl.TextSize = Config.Sizes.SmallSize
     roleLbl.TextXAlignment = Enum.TextXAlignment.Left
     roleLbl.ZIndex = 16
     roleLbl.Parent = roleBadge
     
+    local currentConn = nil
+    
+    local function applyColor(color)
+        cardStroke.Color = color
+        avatarStroke.Color = color
+        badgeStroke.Color = color
+        roleLbl.TextColor3 = color
+        roleBadge.BackgroundColor3 = color
+    end
+    
+    local function stopAnimation()
+        if currentConn then
+            currentConn:Disconnect()
+            currentConn = nil
+        end
+    end
+    
+    local function startRainbow(roleKey)
+        local data = roleRainbow[roleKey]
+        if not data then return end
+        
+        local colors = data.colors
+        local speed = data.speed
+        
+        if roleKey == "owner" then
+            currentConn = RunService.RenderStepped:Connect(function()
+                if not card.Parent then
+                    stopAnimation()
+                    return
+                end
+                local hue = (tick() * 0.3) % 1
+                local c = Color3.fromHSV(hue, 1, 1)
+                applyColor(c)
+            end)
+        else
+            currentConn = RunService.RenderStepped:Connect(function()
+                if not card.Parent then
+                    stopAnimation()
+                    return
+                end
+                local idx = math.floor((tick() * speed) % #colors) + 1
+                local nextIdx = (idx % #colors) + 1
+                local c1 = colors[idx]
+                local c2 = colors[nextIdx]
+                local t = (tick() * speed) % 1
+                local mixed = c1:Lerp(c2, t)
+                applyColor(mixed)
+            end)
+        end
+    end
+    
     card.SetRole = function(_, newRole)
-        local newColor = roleColors[newRole] or Config.Colors.Muted
+        stopAnimation()
+        role = newRole
         local newText = roleTexts[newRole] or roleTexts.unknown
-        roleBadge.BackgroundColor3 = newColor
         roleLbl.Text = newText
-        roleLbl.TextColor3 = newColor
-        local stroke = roleBadge:FindFirstChildOfClass("UIStroke")
-        if stroke then stroke.Color = newColor end
+        
+        if roleStatic[newRole] then
+            applyColor(roleStatic[newRole])
+        elseif roleRainbow[newRole] then
+            startRainbow(newRole)
+        else
+            applyColor(Config.Colors.Muted)
+        end
     end
     
     card.SetAvatar = function(_, url)
@@ -129,6 +209,17 @@ function Profile.new(parent, options, Config, Utils)
     
     card.SetUserId = function(_, id)
         idLbl.Text = "ID: " .. tostring(id)
+    end
+    
+    card.DestroyProfile = function()
+        stopAnimation()
+        card:Destroy()
+    end
+    
+    if roleStatic[role] then
+        applyColor(roleStatic[role])
+    elseif roleRainbow[role] then
+        startRainbow(role)
     end
     
     return card

@@ -19,8 +19,8 @@ function OwnerPanel.open(Config, Utils, modules)
     gui.Parent = PlayerGui
     
     local win = Instance.new("Frame", gui)
-    win.Size = UDim2.new(0, 440, 0, 520)
-    win.Position = UDim2.new(0.5, -220, 0.5, -260)
+    win.Size = UDim2.new(0, 380, 0, 480)
+    win.Position = UDim2.new(0.5, -190, 0.5, -220)
     win.BackgroundColor3 = Config.Colors.Base
     win.BorderSizePixel = 0
     win.Active = true
@@ -29,35 +29,35 @@ function OwnerPanel.open(Config, Utils, modules)
     Utils.stroke(win, Config.Colors.Border, 1)
     
     local topbar = Instance.new("Frame", win)
-    topbar.Size = UDim2.new(1, 0, 0, 40)
+    topbar.Size = UDim2.new(1, 0, 0, 36)
     topbar.BackgroundColor3 = Config.Colors.Topbar
     topbar.BorderSizePixel = 0
     Utils.corner(topbar, Config.Sizes.Radius)
     
     local accent = Instance.new("Frame", topbar)
-    accent.Size = UDim2.new(0, 3, 0, 40)
+    accent.Size = UDim2.new(0, 3, 0, 36)
     accent.BackgroundColor3 = Config.Colors.Accent
     accent.BorderSizePixel = 0
     Utils.corner(accent, Config.Sizes.Radius)
     
     local title = Instance.new("TextLabel", topbar)
     title.Size = UDim2.new(1, -60, 1, 0)
-    title.Position = UDim2.new(0, 14, 0, 0)
+    title.Position = UDim2.new(0, 12, 0, 0)
     title.BackgroundTransparency = 1
     title.Font = Config.Fonts.Title
     title.Text = "👑 DV OWNER PANEL"
     title.TextColor3 = Config.Colors.Text
-    title.TextSize = 14
+    title.TextSize = 12
     title.TextXAlignment = Enum.TextXAlignment.Left
     
     local closeBtn = Instance.new("TextButton", topbar)
-    closeBtn.Size = UDim2.new(0, 24, 0, 24)
-    closeBtn.Position = UDim2.new(1, -30, 0.5, -12)
+    closeBtn.Size = UDim2.new(0, 22, 0, 22)
+    closeBtn.Position = UDim2.new(1, -28, 0.5, -11)
     closeBtn.BackgroundColor3 = Config.Colors.Danger
     closeBtn.Text = "✕"
     closeBtn.TextColor3 = Config.Colors.Text
     closeBtn.Font = Config.Fonts.Title
-    closeBtn.TextSize = 12
+    closeBtn.TextSize = 11
     closeBtn.BorderSizePixel = 0
     Utils.corner(closeBtn, 5)
     closeBtn.MouseButton1Click:Connect(function()
@@ -65,8 +65,8 @@ function OwnerPanel.open(Config, Utils, modules)
     end)
     
     local tabbar = Instance.new("Frame", win)
-    tabbar.Size = UDim2.new(1, 0, 0, 42)
-    tabbar.Position = UDim2.new(0, 0, 0, 40)
+    tabbar.Size = UDim2.new(1, 0, 0, 38)
+    tabbar.Position = UDim2.new(0, 0, 0, 36)
     tabbar.BackgroundColor3 = Config.Colors.Tabbar
     tabbar.BorderSizePixel = 0
     
@@ -88,21 +88,21 @@ function OwnerPanel.open(Config, Utils, modules)
     
     for i, tab in ipairs(tabsList) do
         local btn = Instance.new("TextButton", tabbar)
-        btn.Size = UDim2.new(1 / #tabsList, -2, 1, -6)
-        btn.Position = UDim2.new((i - 1) / #tabsList, 1, 0, 3)
+        btn.Size = UDim2.new(1 / #tabsList, -2, 1, -4)
+        btn.Position = UDim2.new((i - 1) / #tabsList, 1, 0, 2)
         btn.BackgroundColor3 = Config.Colors.Base
         btn.Text = tab.icon
         btn.TextColor3 = Config.Colors.Muted
         btn.Font = Config.Fonts.Title
-        btn.TextSize = 16
+        btn.TextSize = 14
         btn.BorderSizePixel = 0
         btn.AutoButtonColor = false
         Utils.corner(btn, Config.Sizes.RadiusSmall)
         tabButtons[tab.id] = btn
         
         local page = Instance.new("Frame", win)
-        page.Size = UDim2.new(1, 0, 1, -82)
-        page.Position = UDim2.new(0, 0, 0, 82)
+        page.Size = UDim2.new(1, 0, 1, -74)
+        page.Position = UDim2.new(0, 0, 0, 74)
         page.BackgroundTransparency = 1
         page.Visible = false
         page.ZIndex = 10
@@ -234,7 +234,6 @@ function OwnerPanel.open(Config, Utils, modules)
         banned = "🚫",
     }
     
-    -- ============ WL ============
     local wlPage = tabPages["wl"]
     local wlScroll = Instance.new("ScrollingFrame", wlPage)
     wlScroll.Size = UDim2.new(1, -16, 1, -16)
@@ -312,7 +311,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 nameLbl.Font = Config.Fonts.Title
                 nameLbl.Text = info.Username or userId
                 nameLbl.TextColor3 = Config.Colors.Text
-                nameLbl.TextSize = 11
+                nameLbl.TextSize = 10
                 nameLbl.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local roleBadge = Instance.new("Frame", card)
@@ -354,7 +353,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 idLbl.Font = Config.Fonts.Mono
                 idLbl.Text = "ID: " .. userId
                 idLbl.TextColor3 = Config.Colors.Muted
-                idLbl.TextSize = 9
+                idLbl.TextSize = 8
                 idLbl.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local expLbl = Instance.new("TextLabel", card)
@@ -364,7 +363,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 expLbl.Font = Config.Fonts.Mono
                 expLbl.Text = "📅 " .. (info.Expired or "Lifetime")
                 expLbl.TextColor3 = Config.Colors.Muted
-                expLbl.TextSize = 9
+                expLbl.TextSize = 8
                 expLbl.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local btnRow = Instance.new("Frame", card)
@@ -383,7 +382,7 @@ function OwnerPanel.open(Config, Utils, modules)
                     b.Text = text
                     b.TextColor3 = Config.Colors.Text
                     b.Font = Config.Fonts.Title
-                    b.TextSize = 9
+                    b.TextSize = 8
                     b.BorderSizePixel = 0
                     b.AutoButtonColor = false
                     Utils.corner(b, Config.Sizes.RadiusSmall)
@@ -392,19 +391,19 @@ function OwnerPanel.open(Config, Utils, modules)
                 end
                 
                 if not isOwner then
-                    mkBtn("⚙️ ROLE", Color3.fromRGB(60, 40, 100), 70, function()
+                    mkBtn("⚙️ ROLE", Color3.fromRGB(60, 40, 100), 60, function()
                         showRoleChangeModal(userId, info, renderWL)
                     end)
                     
-                    mkBtn("📅 EXP", Color3.fromRGB(60, 60, 20), 70, function()
+                    mkBtn("📅 EXP", Color3.fromRGB(60, 60, 20), 60, function()
                         showExpiryModal(userId, info, renderWL)
                     end)
                     
-                    mkBtn("🔨 BAN", Config.Colors.Danger, 70, function()
+                    mkBtn("🔨 BAN", Config.Colors.Danger, 60, function()
                         showBanConfirmModal(userId, info, renderWL)
                     end)
                     
-                    mkBtn("🗑️ DEL", Color3.fromRGB(100, 20, 20), 70, function()
+                    mkBtn("🗑️ DEL", Color3.fromRGB(100, 20, 20), 60, function()
                         showDeleteConfirmModal(userId, info, renderWL)
                     end)
                 else
@@ -414,7 +413,7 @@ function OwnerPanel.open(Config, Utils, modules)
                     lock.Text = "🔒 OWNER PROTECTED"
                     lock.TextColor3 = Config.Colors.Owner
                     lock.Font = Config.Fonts.Title
-                    lock.TextSize = 10
+                    lock.TextSize = 9
                     lock.BorderSizePixel = 0
                     Utils.corner(lock, Config.Sizes.RadiusSmall)
                 end
@@ -431,8 +430,8 @@ function OwnerPanel.open(Config, Utils, modules)
         overlay.ZIndex = 500
         
         local modal = Instance.new("Frame", overlay)
-        modal.Size = UDim2.new(0, 260, 0, 240)
-        modal.Position = UDim2.new(0.5, -130, 0.5, -120)
+        modal.Size = UDim2.new(0, 240, 0, 220)
+        modal.Position = UDim2.new(0.5, -120, 0.5, -110)
         modal.BackgroundColor3 = Config.Colors.Card
         modal.BorderSizePixel = 0
         modal.ZIndex = 501
@@ -453,19 +452,19 @@ function OwnerPanel.open(Config, Utils, modules)
         closeX.MouseButton1Click:Connect(function() overlay:Destroy() end)
         
         local t = Instance.new("TextLabel", modal)
-        t.Size = UDim2.new(1, -60, 0, 24)
+        t.Size = UDim2.new(1, -60, 0, 22)
         t.Position = UDim2.new(0, 10, 0, 8)
         t.BackgroundTransparency = 1
         t.Font = Config.Fonts.Title
         t.Text = "⚙️ PILIH ROLE"
         t.TextColor3 = Config.Colors.Accent
-        t.TextSize = 12
+        t.TextSize = 11
         t.TextXAlignment = Enum.TextXAlignment.Left
         t.ZIndex = 502
         
         local u = Instance.new("TextLabel", modal)
         u.Size = UDim2.new(1, -20, 0, 14)
-        u.Position = UDim2.new(0, 10, 0, 32)
+        u.Position = UDim2.new(0, 10, 0, 30)
         u.BackgroundTransparency = 1
         u.Font = Config.Fonts.Mono
         u.Text = info.Username or userId
@@ -475,20 +474,20 @@ function OwnerPanel.open(Config, Utils, modules)
         u.ZIndex = 502
         
         local roles = { "user", "vip", "admin" }
-        local y = 54
+        local y = 50
         
         for _, r in ipairs(roles) do
             local rCol = roleColors[r] or Config.Colors.Muted
             local rIco = roleIcons[r] or "❓"
             
             local b = Instance.new("TextButton", modal)
-            b.Size = UDim2.new(1, -20, 0, 30)
+            b.Size = UDim2.new(1, -20, 0, 28)
             b.Position = UDim2.new(0, 10, 0, y)
             b.BackgroundColor3 = (string.lower(info.Role or "") == r) and rCol or Config.Colors.Base
             b.Text = rIco .. "  " .. string.upper(r)
             b.TextColor3 = Config.Colors.Text
             b.Font = Config.Fonts.Title
-            b.TextSize = 11
+            b.TextSize = 10
             b.BorderSizePixel = 0
             b.ZIndex = 502
             Utils.corner(b, Config.Sizes.RadiusSmall)
@@ -505,17 +504,17 @@ function OwnerPanel.open(Config, Utils, modules)
                 end)
             end)
             
-            y = y + 34
+            y = y + 32
         end
         
         local cancel = Instance.new("TextButton", modal)
-        cancel.Size = UDim2.new(1, -20, 0, 30)
-        cancel.Position = UDim2.new(0, 10, 1, -40)
+        cancel.Size = UDim2.new(1, -20, 0, 28)
+        cancel.Position = UDim2.new(0, 10, 1, -38)
         cancel.BackgroundColor3 = Config.Colors.Danger
         cancel.Text = "❌ BATAL"
         cancel.TextColor3 = Config.Colors.Text
         cancel.Font = Config.Fonts.Title
-        cancel.TextSize = 11
+        cancel.TextSize = 10
         cancel.BorderSizePixel = 0
         cancel.ZIndex = 502
         Utils.corner(cancel, Config.Sizes.RadiusSmall)
@@ -533,8 +532,8 @@ function OwnerPanel.open(Config, Utils, modules)
         overlay.ZIndex = 500
         
         local modal = Instance.new("Frame", overlay)
-        modal.Size = UDim2.new(0, 320, 0, 270)
-        modal.Position = UDim2.new(0.5, -160, 0.5, -135)
+        modal.Size = UDim2.new(0, 300, 0, 260)
+        modal.Position = UDim2.new(0.5, -150, 0.5, -130)
         modal.BackgroundColor3 = Config.Colors.Card
         modal.BorderSizePixel = 0
         modal.ZIndex = 501
@@ -555,19 +554,19 @@ function OwnerPanel.open(Config, Utils, modules)
         closeX.MouseButton1Click:Connect(function() overlay:Destroy() end)
         
         local t = Instance.new("TextLabel", modal)
-        t.Size = UDim2.new(1, -60, 0, 24)
+        t.Size = UDim2.new(1, -60, 0, 22)
         t.Position = UDim2.new(0, 10, 0, 8)
         t.BackgroundTransparency = 1
         t.Font = Config.Fonts.Title
         t.Text = "📅 SET EXPIRY"
         t.TextColor3 = Config.Colors.Accent
-        t.TextSize = 12
+        t.TextSize = 11
         t.TextXAlignment = Enum.TextXAlignment.Left
         t.ZIndex = 502
         
         local u = Instance.new("TextLabel", modal)
         u.Size = UDim2.new(1, -20, 0, 14)
-        u.Position = UDim2.new(0, 10, 0, 32)
+        u.Position = UDim2.new(0, 10, 0, 30)
         u.BackgroundTransparency = 1
         u.Font = Config.Fonts.Mono
         u.Text = info.Username or userId
@@ -578,32 +577,32 @@ function OwnerPanel.open(Config, Utils, modules)
         
         local durFrame = Instance.new("Frame", modal)
         durFrame.Size = UDim2.new(1, -20, 0, 130)
-        durFrame.Position = UDim2.new(0, 10, 0, 54)
+        durFrame.Position = UDim2.new(0, 10, 0, 50)
         durFrame.BackgroundTransparency = 1
         durFrame.ZIndex = 502
         
         local picker = modules.DurationPicker.new(durFrame, {}, Config, Utils, nil)
         
         local save = Instance.new("TextButton", modal)
-        save.Size = UDim2.new(0.5, -15, 0, 30)
-        save.Position = UDim2.new(0, 10, 1, -40)
+        save.Size = UDim2.new(0.5, -15, 0, 28)
+        save.Position = UDim2.new(0, 10, 1, -38)
         save.BackgroundColor3 = Config.Colors.Accent
         save.Text = "💾 SET"
         save.TextColor3 = Config.Colors.Text
         save.Font = Config.Fonts.Title
-        save.TextSize = 11
+        save.TextSize = 10
         save.BorderSizePixel = 0
         save.ZIndex = 502
         Utils.corner(save, Config.Sizes.RadiusSmall)
         
         local cancel = Instance.new("TextButton", modal)
-        cancel.Size = UDim2.new(0.5, -15, 0, 30)
-        cancel.Position = UDim2.new(0.5, 5, 1, -40)
+        cancel.Size = UDim2.new(0.5, -15, 0, 28)
+        cancel.Position = UDim2.new(0.5, 5, 1, -38)
         cancel.BackgroundColor3 = Config.Colors.Danger
         cancel.Text = "❌ BATAL"
         cancel.TextColor3 = Config.Colors.Text
         cancel.Font = Config.Fonts.Title
-        cancel.TextSize = 11
+        cancel.TextSize = 10
         cancel.BorderSizePixel = 0
         cancel.ZIndex = 502
         Utils.corner(cancel, Config.Sizes.RadiusSmall)
@@ -646,8 +645,8 @@ function OwnerPanel.open(Config, Utils, modules)
         overlay.ZIndex = 500
         
         local modal = Instance.new("Frame", overlay)
-        modal.Size = UDim2.new(0, 320, 0, 280)
-        modal.Position = UDim2.new(0.5, -160, 0.5, -140)
+        modal.Size = UDim2.new(0, 300, 0, 260)
+        modal.Position = UDim2.new(0.5, -150, 0.5, -130)
         modal.BackgroundColor3 = Config.Colors.Card
         modal.BorderSizePixel = 0
         modal.ZIndex = 501
@@ -668,19 +667,19 @@ function OwnerPanel.open(Config, Utils, modules)
         closeX.MouseButton1Click:Connect(function() overlay:Destroy() end)
         
         local t = Instance.new("TextLabel", modal)
-        t.Size = UDim2.new(1, -60, 0, 24)
+        t.Size = UDim2.new(1, -60, 0, 22)
         t.Position = UDim2.new(0, 10, 0, 8)
         t.BackgroundTransparency = 1
         t.Font = Config.Fonts.Title
         t.Text = "🔨 BAN USER"
         t.TextColor3 = Config.Colors.Danger
-        t.TextSize = 12
+        t.TextSize = 11
         t.TextXAlignment = Enum.TextXAlignment.Left
         t.ZIndex = 502
         
         local u = Instance.new("TextLabel", modal)
         u.Size = UDim2.new(1, -20, 0, 14)
-        u.Position = UDim2.new(0, 10, 0, 32)
+        u.Position = UDim2.new(0, 10, 0, 30)
         u.BackgroundTransparency = 1
         u.Font = Config.Fonts.Mono
         u.Text = info.Username or userId
@@ -691,18 +690,18 @@ function OwnerPanel.open(Config, Utils, modules)
         
         local reasonLbl = Instance.new("TextLabel", modal)
         reasonLbl.Size = UDim2.new(1, -20, 0, 14)
-        reasonLbl.Position = UDim2.new(0, 10, 0, 54)
+        reasonLbl.Position = UDim2.new(0, 10, 0, 50)
         reasonLbl.BackgroundTransparency = 1
         reasonLbl.Font = Config.Fonts.Title
         reasonLbl.Text = "📝 Alasan:"
         reasonLbl.TextColor3 = Config.Colors.Text
-        reasonLbl.TextSize = 10
+        reasonLbl.TextSize = 9
         reasonLbl.TextXAlignment = Enum.TextXAlignment.Left
         reasonLbl.ZIndex = 502
         
         local reasonInput = Instance.new("TextBox", modal)
-        reasonInput.Size = UDim2.new(1, -20, 0, 24)
-        reasonInput.Position = UDim2.new(0, 10, 0, 70)
+        reasonInput.Size = UDim2.new(1, -20, 0, 22)
+        reasonInput.Position = UDim2.new(0, 10, 0, 66)
         reasonInput.BackgroundColor3 = Config.Colors.Base
         reasonInput.BorderSizePixel = 0
         reasonInput.PlaceholderText = "Alasan ban..."
@@ -717,43 +716,43 @@ function OwnerPanel.open(Config, Utils, modules)
         
         local durLbl = Instance.new("TextLabel", modal)
         durLbl.Size = UDim2.new(1, -20, 0, 14)
-        durLbl.Position = UDim2.new(0, 10, 0, 100)
+        durLbl.Position = UDim2.new(0, 10, 0, 94)
         durLbl.BackgroundTransparency = 1
         durLbl.Font = Config.Fonts.Title
         durLbl.Text = "⏱️ Durasi:"
         durLbl.TextColor3 = Config.Colors.Text
-        durLbl.TextSize = 10
+        durLbl.TextSize = 9
         durLbl.TextXAlignment = Enum.TextXAlignment.Left
         durLbl.ZIndex = 502
         
         local durFrame = Instance.new("Frame", modal)
-        durFrame.Size = UDim2.new(1, -20, 0, 80)
-        durFrame.Position = UDim2.new(0, 10, 0, 116)
+        durFrame.Size = UDim2.new(1, -20, 0, 78)
+        durFrame.Position = UDim2.new(0, 10, 0, 110)
         durFrame.BackgroundTransparency = 1
         durFrame.ZIndex = 502
         
         local picker = modules.DurationPicker.new(durFrame, {}, Config, Utils, nil)
         
         local okBtn = Instance.new("TextButton", modal)
-        okBtn.Size = UDim2.new(0.5, -15, 0, 30)
-        okBtn.Position = UDim2.new(0, 10, 1, -40)
+        okBtn.Size = UDim2.new(0.5, -15, 0, 28)
+        okBtn.Position = UDim2.new(0, 10, 1, -38)
         okBtn.BackgroundColor3 = Config.Colors.Danger
         okBtn.Text = "🔨 BAN"
         okBtn.TextColor3 = Config.Colors.Text
         okBtn.Font = Config.Fonts.Title
-        okBtn.TextSize = 11
+        okBtn.TextSize = 10
         okBtn.BorderSizePixel = 0
         okBtn.ZIndex = 502
         Utils.corner(okBtn, Config.Sizes.RadiusSmall)
         
         local cancelBtn = Instance.new("TextButton", modal)
-        cancelBtn.Size = UDim2.new(0.5, -15, 0, 30)
-        cancelBtn.Position = UDim2.new(0.5, 5, 1, -40)
+        cancelBtn.Size = UDim2.new(0.5, -15, 0, 28)
+        cancelBtn.Position = UDim2.new(0.5, 5, 1, -38)
         cancelBtn.BackgroundColor3 = Config.Colors.Card
         cancelBtn.Text = "❌ BATAL"
         cancelBtn.TextColor3 = Config.Colors.Text
         cancelBtn.Font = Config.Fonts.Title
-        cancelBtn.TextSize = 11
+        cancelBtn.TextSize = 10
         cancelBtn.BorderSizePixel = 0
         cancelBtn.ZIndex = 502
         Utils.corner(cancelBtn, Config.Sizes.RadiusSmall)
@@ -805,8 +804,8 @@ function OwnerPanel.open(Config, Utils, modules)
         overlay.ZIndex = 500
         
         local modal = Instance.new("Frame", overlay)
-        modal.Size = UDim2.new(0, 280, 0, 170)
-        modal.Position = UDim2.new(0.5, -140, 0.5, -85)
+        modal.Size = UDim2.new(0, 260, 0, 160)
+        modal.Position = UDim2.new(0.5, -130, 0.5, -80)
         modal.BackgroundColor3 = Config.Colors.Card
         modal.BorderSizePixel = 0
         modal.ZIndex = 501
@@ -827,19 +826,19 @@ function OwnerPanel.open(Config, Utils, modules)
         closeX.MouseButton1Click:Connect(function() overlay:Destroy() end)
         
         local t = Instance.new("TextLabel", modal)
-        t.Size = UDim2.new(1, -60, 0, 24)
+        t.Size = UDim2.new(1, -60, 0, 22)
         t.Position = UDim2.new(0, 10, 0, 10)
         t.BackgroundTransparency = 1
         t.Font = Config.Fonts.Title
         t.Text = "🗑️ HAPUS USER?"
         t.TextColor3 = Config.Colors.Danger
-        t.TextSize = 13
+        t.TextSize = 12
         t.TextXAlignment = Enum.TextXAlignment.Left
         t.ZIndex = 502
         
         local m = Instance.new("TextLabel", modal)
         m.Size = UDim2.new(1, -20, 0, 50)
-        m.Position = UDim2.new(0, 10, 0, 40)
+        m.Position = UDim2.new(0, 10, 0, 38)
         m.BackgroundTransparency = 1
         m.Font = Config.Fonts.Body
         m.Text = "Yakin hapus " .. (info.Username or userId) .. "?"
@@ -850,25 +849,25 @@ function OwnerPanel.open(Config, Utils, modules)
         m.ZIndex = 502
         
         local okBtn = Instance.new("TextButton", modal)
-        okBtn.Size = UDim2.new(0.5, -15, 0, 30)
-        okBtn.Position = UDim2.new(0, 10, 1, -40)
+        okBtn.Size = UDim2.new(0.5, -15, 0, 28)
+        okBtn.Position = UDim2.new(0, 10, 1, -38)
         okBtn.BackgroundColor3 = Config.Colors.Danger
         okBtn.Text = "🗑️ HAPUS"
         okBtn.TextColor3 = Config.Colors.Text
         okBtn.Font = Config.Fonts.Title
-        okBtn.TextSize = 11
+        okBtn.TextSize = 10
         okBtn.BorderSizePixel = 0
         okBtn.ZIndex = 502
         Utils.corner(okBtn, Config.Sizes.RadiusSmall)
         
         local cancelBtn = Instance.new("TextButton", modal)
-        cancelBtn.Size = UDim2.new(0.5, -15, 0, 30)
-        cancelBtn.Position = UDim2.new(0.5, 5, 1, -40)
+        cancelBtn.Size = UDim2.new(0.5, -15, 0, 28)
+        cancelBtn.Position = UDim2.new(0.5, 5, 1, -38)
         cancelBtn.BackgroundColor3 = Config.Colors.Card
         cancelBtn.Text = "❌ BATAL"
         cancelBtn.TextColor3 = Config.Colors.Text
         cancelBtn.Font = Config.Fonts.Title
-        cancelBtn.TextSize = 11
+        cancelBtn.TextSize = 10
         cancelBtn.BorderSizePixel = 0
         cancelBtn.ZIndex = 502
         Utils.corner(cancelBtn, Config.Sizes.RadiusSmall)
@@ -888,7 +887,6 @@ function OwnerPanel.open(Config, Utils, modules)
         end)
     end
     
-    -- ============ REQ ============
     local reqPage = tabPages["req"]
     local reqScroll = Instance.new("ScrollingFrame", reqPage)
     reqScroll.Size = UDim2.new(1, -16, 1, -16)
@@ -924,13 +922,13 @@ function OwnerPanel.open(Config, Utils, modules)
                     count = count + 1
                     
                     local card = Instance.new("Frame", reqScroll)
-                    card.Size = UDim2.new(1, 0, 0, 90)
+                    card.Size = UDim2.new(1, 0, 0, 85)
                     card.BackgroundColor3 = Config.Colors.Base
                     card.BorderSizePixel = 0
                     Utils.corner(card, Config.Sizes.RadiusSmall)
                     
                     local avatar = Instance.new("ImageLabel", card)
-                    avatar.Size = UDim2.new(0, 44, 0, 44)
+                    avatar.Size = UDim2.new(0, 40, 0, 40)
                     avatar.Position = UDim2.new(0, 8, 0, 8)
                     avatar.BackgroundColor3 = Config.Colors.Card
                     avatar.BorderSizePixel = 0
@@ -939,22 +937,22 @@ function OwnerPanel.open(Config, Utils, modules)
                     
                     local nameLbl = Instance.new("TextLabel", card)
                     nameLbl.Size = UDim2.new(1, -70, 0, 18)
-                    nameLbl.Position = UDim2.new(0, 60, 0, 6)
+                    nameLbl.Position = UDim2.new(0, 56, 0, 6)
                     nameLbl.BackgroundTransparency = 1
                     nameLbl.Font = Config.Fonts.Title
                     nameLbl.Text = "👤 " .. (info.Username or reqId)
                     nameLbl.TextColor3 = Config.Colors.Text
-                    nameLbl.TextSize = 11
+                    nameLbl.TextSize = 10
                     nameLbl.TextXAlignment = Enum.TextXAlignment.Left
                     
                     local idLbl = Instance.new("TextLabel", card)
                     idLbl.Size = UDim2.new(1, -70, 0, 12)
-                    idLbl.Position = UDim2.new(0, 60, 0, 26)
+                    idLbl.Position = UDim2.new(0, 56, 0, 24)
                     idLbl.BackgroundTransparency = 1
                     idLbl.Font = Config.Fonts.Mono
                     idLbl.Text = "ID: " .. (info.UserId or reqId) .. " • " .. (info.DateRequest or "?")
                     idLbl.TextColor3 = Config.Colors.Muted
-                    idLbl.TextSize = 9
+                    idLbl.TextSize = 8
                     idLbl.TextXAlignment = Enum.TextXAlignment.Left
                     
                     local btnRow = Instance.new("Frame", card)
@@ -972,7 +970,7 @@ function OwnerPanel.open(Config, Utils, modules)
                     approveBtn.Text = "✅ APPROVE"
                     approveBtn.TextColor3 = Config.Colors.Text
                     approveBtn.Font = Config.Fonts.Title
-                    approveBtn.TextSize = 10
+                    approveBtn.TextSize = 9
                     approveBtn.BorderSizePixel = 0
                     Utils.corner(approveBtn, Config.Sizes.RadiusSmall)
                     
@@ -1005,7 +1003,7 @@ function OwnerPanel.open(Config, Utils, modules)
                     rejectBtn.Text = "❌ REJECT"
                     rejectBtn.TextColor3 = Config.Colors.Text
                     rejectBtn.Font = Config.Fonts.Title
-                    rejectBtn.TextSize = 10
+                    rejectBtn.TextSize = 9
                     rejectBtn.BorderSizePixel = 0
                     Utils.corner(rejectBtn, Config.Sizes.RadiusSmall)
                     
@@ -1025,16 +1023,15 @@ function OwnerPanel.open(Config, Utils, modules)
                 empty.Font = Config.Fonts.Body
                 empty.Text = "Gak ada request pending"
                 empty.TextColor3 = Config.Colors.Muted
-                empty.TextSize = 11
+                empty.TextSize = 10
             end
         end)
     end
     
-    -- ============ BAN ============
     local banPage = tabPages["ban"]
     
     local banFormCard = Instance.new("Frame", banPage)
-    banFormCard.Size = UDim2.new(1, -16, 0, 118)
+    banFormCard.Size = UDim2.new(1, -16, 0, 110)
     banFormCard.Position = UDim2.new(0, 8, 0, 8)
     banFormCard.BackgroundColor3 = Config.Colors.Card
     banFormCard.BorderSizePixel = 0
@@ -1047,12 +1044,12 @@ function OwnerPanel.open(Config, Utils, modules)
     formTitle.Font = Config.Fonts.Title
     formTitle.Text = "🔨 BAN MANUAL"
     formTitle.TextColor3 = Config.Colors.Danger
-    formTitle.TextSize = 11
+    formTitle.TextSize = 10
     formTitle.TextXAlignment = Enum.TextXAlignment.Left
     
     local targetInput = Instance.new("TextBox", banFormCard)
     targetInput.Size = UDim2.new(0.6, -6, 0, 24)
-    targetInput.Position = UDim2.new(0, 6, 0, 24)
+    targetInput.Position = UDim2.new(0, 6, 0, 22)
     targetInput.BackgroundColor3 = Config.Colors.Base
     targetInput.BorderSizePixel = 0
     targetInput.PlaceholderText = "UserId / Username"
@@ -1068,12 +1065,12 @@ function OwnerPanel.open(Config, Utils, modules)
     
     local banDurationBtn = Instance.new("TextButton", banFormCard)
     banDurationBtn.Size = UDim2.new(0.4, -6, 0, 24)
-    banDurationBtn.Position = UDim2.new(0.6, 0, 0, 24)
+    banDurationBtn.Position = UDim2.new(0.6, 0, 0, 22)
     banDurationBtn.BackgroundColor3 = Config.Colors.Base
     banDurationBtn.Text = "♾️ Permanent ▾"
     banDurationBtn.TextColor3 = Config.Colors.Text
     banDurationBtn.Font = Config.Fonts.Body
-    banDurationBtn.TextSize = 10
+    banDurationBtn.TextSize = 9
     banDurationBtn.BorderSizePixel = 0
     banDurationBtn.AutoButtonColor = false
     banDurationBtn.ZIndex = 15
@@ -1081,8 +1078,8 @@ function OwnerPanel.open(Config, Utils, modules)
     Utils.stroke(banDurationBtn, Config.Colors.Border, 1)
     
     local reasonInput = Instance.new("TextBox", banFormCard)
-    reasonInput.Size = UDim2.new(1, -12, 0, 24)
-    reasonInput.Position = UDim2.new(0, 6, 0, 52)
+    reasonInput.Size = UDim2.new(1, -12, 0, 22)
+    reasonInput.Position = UDim2.new(0, 6, 0, 50)
     reasonInput.BackgroundColor3 = Config.Colors.Base
     reasonInput.BorderSizePixel = 0
     reasonInput.PlaceholderText = "Reason (opsional)"
@@ -1097,13 +1094,13 @@ function OwnerPanel.open(Config, Utils, modules)
     Utils.stroke(reasonInput, Config.Colors.Border, 1)
     
     local banSubmitBtn = Instance.new("TextButton", banFormCard)
-    banSubmitBtn.Size = UDim2.new(1, -12, 0, 28)
-    banSubmitBtn.Position = UDim2.new(0, 6, 0, 82)
+    banSubmitBtn.Size = UDim2.new(1, -12, 0, 26)
+    banSubmitBtn.Position = UDim2.new(0, 6, 0, 78)
     banSubmitBtn.BackgroundColor3 = Config.Colors.Danger
     banSubmitBtn.Text = "🔨 BAN USER"
     banSubmitBtn.TextColor3 = Config.Colors.Text
     banSubmitBtn.Font = Config.Fonts.Title
-    banSubmitBtn.TextSize = 11
+    banSubmitBtn.TextSize = 10
     banSubmitBtn.BorderSizePixel = 0
     banSubmitBtn.ZIndex = 15
     Utils.corner(banSubmitBtn, Config.Sizes.RadiusSmall)
@@ -1119,8 +1116,8 @@ function OwnerPanel.open(Config, Utils, modules)
         overlay.ZIndex = 700
         
         local modal = Instance.new("Frame", overlay)
-        modal.Size = UDim2.new(0, 260, 0, 260)
-        modal.Position = UDim2.new(0.5, -130, 0.5, -130)
+        modal.Size = UDim2.new(0, 240, 0, 250)
+        modal.Position = UDim2.new(0.5, -120, 0.5, -125)
         modal.BackgroundColor3 = Config.Colors.Card
         modal.BorderSizePixel = 0
         modal.ZIndex = 701
@@ -1147,7 +1144,7 @@ function OwnerPanel.open(Config, Utils, modules)
         t.Font = Config.Fonts.Title
         t.Text = "⏱️ PILIH DURASI"
         t.TextColor3 = Config.Colors.Danger
-        t.TextSize = 12
+        t.TextSize = 11
         t.TextXAlignment = Enum.TextXAlignment.Left
         t.ZIndex = 702
         
@@ -1160,16 +1157,16 @@ function OwnerPanel.open(Config, Utils, modules)
             { value = "90 hari", label = "📅 90 Hari" },
         }
         
-        local y = 38
+        local y = 36
         for _, opt in ipairs(options) do
             local b = Instance.new("TextButton", modal)
-            b.Size = UDim2.new(1, -20, 0, 30)
+            b.Size = UDim2.new(1, -20, 0, 28)
             b.Position = UDim2.new(0, 10, 0, y)
             b.BackgroundColor3 = (selectedBanDuration.value == opt.value) and Config.Colors.Danger or Config.Colors.Base
             b.Text = opt.label
             b.TextColor3 = Config.Colors.Text
             b.Font = Config.Fonts.Title
-            b.TextSize = 11
+            b.TextSize = 10
             b.BorderSizePixel = 0
             b.ZIndex = 702
             Utils.corner(b, Config.Sizes.RadiusSmall)
@@ -1181,7 +1178,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 overlay:Destroy()
             end)
             
-            y = y + 34
+            y = y + 32
         end
     end)
     
@@ -1237,8 +1234,8 @@ function OwnerPanel.open(Config, Utils, modules)
     end)
     
     local banScroll = Instance.new("ScrollingFrame", banPage)
-    banScroll.Size = UDim2.new(1, -16, 1, -134)
-    banScroll.Position = UDim2.new(0, 8, 0, 134)
+    banScroll.Size = UDim2.new(1, -16, 1, -126)
+    banScroll.Position = UDim2.new(0, 8, 0, 126)
     banScroll.BackgroundColor3 = Config.Colors.Card
     banScroll.BorderSizePixel = 0
     banScroll.ScrollBarThickness = 4
@@ -1266,7 +1263,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 empty.Font = Config.Fonts.Body
                 empty.Text = "Gak ada user di-ban"
                 empty.TextColor3 = Config.Colors.Muted
-                empty.TextSize = 11
+                empty.TextSize = 10
                 return
             end
             
@@ -1288,7 +1285,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 empty.Font = Config.Fonts.Body
                 empty.Text = "Gak ada user di-ban"
                 empty.TextColor3 = Config.Colors.Muted
-                empty.TextSize = 11
+                empty.TextSize = 10
                 return
             end
             
@@ -1297,7 +1294,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 local val = entry.val
                 
                 local card = Instance.new("Frame", banScroll)
-                card.Size = UDim2.new(1, 0, 0, 90)
+                card.Size = UDim2.new(1, 0, 0, 85)
                 card.BackgroundColor3 = Color3.fromRGB(30, 15, 15)
                 card.BorderSizePixel = 0
                 Utils.corner(card, Config.Sizes.RadiusSmall)
@@ -1307,7 +1304,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 s.Thickness = 1
                 
                 local avatar = Instance.new("ImageLabel", card)
-                avatar.Size = UDim2.new(0, 44, 0, 44)
+                avatar.Size = UDim2.new(0, 40, 0, 40)
                 avatar.Position = UDim2.new(0, 8, 0, 8)
                 avatar.BackgroundColor3 = Config.Colors.Card
                 avatar.BorderSizePixel = 0
@@ -1316,12 +1313,12 @@ function OwnerPanel.open(Config, Utils, modules)
                 
                 local n = Instance.new("TextLabel", card)
                 n.Size = UDim2.new(1, -70, 0, 18)
-                n.Position = UDim2.new(0, 60, 0, 6)
+                n.Position = UDim2.new(0, 56, 0, 6)
                 n.BackgroundTransparency = 1
                 n.Font = Config.Fonts.Title
                 n.Text = "🚫 " .. tostring(userId)
                 n.TextColor3 = Config.Colors.Danger
-                n.TextSize = 11
+                n.TextSize = 10
                 n.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local reason = "?"
@@ -1339,8 +1336,8 @@ function OwnerPanel.open(Config, Utils, modules)
                 end
                 
                 local r = Instance.new("TextLabel", card)
-                r.Size = UDim2.new(1, -70, 0, 14)
-                r.Position = UDim2.new(0, 60, 0, 26)
+                r.Size = UDim2.new(1, -70, 0, 12)
+                r.Position = UDim2.new(0, 56, 0, 24)
                 r.BackgroundTransparency = 1
                 r.Font = Config.Fonts.Body
                 r.Text = "📝 " .. tostring(reason)
@@ -1350,7 +1347,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 
                 local meta = Instance.new("TextLabel", card)
                 meta.Size = UDim2.new(1, -70, 0, 12)
-                meta.Position = UDim2.new(0, 60, 0, 44)
+                meta.Position = UDim2.new(0, 56, 0, 40)
                 meta.BackgroundTransparency = 1
                 meta.Font = Config.Fonts.Mono
                 meta.Text = "⏱️ " .. tostring(duration) .. " • 📅 " .. dateStr
@@ -1359,8 +1356,8 @@ function OwnerPanel.open(Config, Utils, modules)
                 meta.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local unbanBtn = Instance.new("TextButton", card)
-                unbanBtn.Size = UDim2.new(0, 70, 0, 26)
-                unbanBtn.Position = UDim2.new(1, -78, 1, -34)
+                unbanBtn.Size = UDim2.new(0, 70, 0, 24)
+                unbanBtn.Position = UDim2.new(1, -78, 1, -32)
                 unbanBtn.BackgroundColor3 = Color3.fromRGB(20, 100, 40)
                 unbanBtn.Text = "✅ UNBAN"
                 unbanBtn.TextColor3 = Config.Colors.Text
@@ -1381,7 +1378,6 @@ function OwnerPanel.open(Config, Utils, modules)
         end)
     end
     
-    -- ============ STAT ============
     local statPage = tabPages["stat"]
     local statScroll = Instance.new("ScrollingFrame", statPage)
     statScroll.Size = UDim2.new(1, -16, 1, -16)
@@ -1401,7 +1397,7 @@ function OwnerPanel.open(Config, Utils, modules)
         
         local function addStat(label, value, color)
             local card = Instance.new("Frame", statScroll)
-            card.Size = UDim2.new(1, 0, 0, 34)
+            card.Size = UDim2.new(1, 0, 0, 32)
             card.BackgroundColor3 = Config.Colors.Card
             card.BorderSizePixel = 0
             Utils.corner(card, Config.Sizes.RadiusSmall)
@@ -1413,7 +1409,7 @@ function OwnerPanel.open(Config, Utils, modules)
             l.Font = Config.Fonts.Title
             l.Text = label
             l.TextColor3 = Config.Colors.Text
-            l.TextSize = 11
+            l.TextSize = 10
             l.TextXAlignment = Enum.TextXAlignment.Left
             
             local v = Instance.new("TextLabel", card)
@@ -1423,7 +1419,7 @@ function OwnerPanel.open(Config, Utils, modules)
             v.Font = Config.Fonts.Black
             v.Text = tostring(value)
             v.TextColor3 = color or Config.Colors.Accent
-            v.TextSize = 14
+            v.TextSize = 13
             v.TextXAlignment = Enum.TextXAlignment.Right
         end
         
@@ -1465,7 +1461,6 @@ function OwnerPanel.open(Config, Utils, modules)
         end)
     end
     
-    -- ============ LOG ============
     local logPage = tabPages["log"]
     local logScroll = Instance.new("ScrollingFrame", logPage)
     logScroll.Size = UDim2.new(1, -16, 1, -16)
@@ -1497,7 +1492,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 empty.Font = Config.Fonts.Body
                 empty.Text = "Belum ada log"
                 empty.TextColor3 = Config.Colors.Muted
-                empty.TextSize = 11
+                empty.TextSize = 10
                 return
             end
             
@@ -1517,7 +1512,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 
                 local info = e.info
                 local card = Instance.new("Frame", logScroll)
-                card.Size = UDim2.new(1, 0, 0, 36)
+                card.Size = UDim2.new(1, 0, 0, 34)
                 card.BackgroundColor3 = Config.Colors.Base
                 card.BorderSizePixel = 0
                 Utils.corner(card, Config.Sizes.RadiusSmall)
@@ -1532,6 +1527,8 @@ function OwnerPanel.open(Config, Utils, modules)
                     KEY_GENERATE = Config.Colors.Accent,
                     KEY_REDEEM = Config.Colors.VIP,
                     KEY_REVOKE = Config.Colors.Danger,
+                    AUTO_EXPIRE = Config.Colors.Warning,
+                    AUTO_UNBAN = Config.Colors.Success,
                 }
                 local actionColor = actionColors[info.Action] or Config.Colors.Muted
                 
@@ -1568,7 +1565,6 @@ function OwnerPanel.open(Config, Utils, modules)
         end)
     end
     
-    -- ============ DEV ============
     local devPage = tabPages["dev"]
     local devScroll = Instance.new("ScrollingFrame", devPage)
     devScroll.Size = UDim2.new(1, -16, 1, -16)
@@ -1600,7 +1596,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 empty.Font = Config.Fonts.Body
                 empty.Text = "Belum ada data device"
                 empty.TextColor3 = Config.Colors.Muted
-                empty.TextSize = 11
+                empty.TextSize = 10
                 return
             end
             
@@ -1620,7 +1616,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 local isOnline = info.LastSeen and (now - info.LastSeen) < 300
                 
                 local card = Instance.new("Frame", devScroll)
-                card.Size = UDim2.new(1, 0, 0, 58)
+                card.Size = UDim2.new(1, 0, 0, 54)
                 card.BackgroundColor3 = isOnline and Color3.fromRGB(20, 40, 20) or Config.Colors.Base
                 card.BorderSizePixel = 0
                 Utils.corner(card, Config.Sizes.RadiusSmall)
@@ -1632,7 +1628,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 n.Font = Config.Fonts.Title
                 n.Text = (isOnline and "🟢 " or "⚫ ") .. tostring(info.Username or e.key)
                 n.TextColor3 = Config.Colors.Text
-                n.TextSize = 11
+                n.TextSize = 10
                 n.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local l1 = Instance.new("TextLabel", card)
@@ -1642,7 +1638,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 l1.Font = Config.Fonts.Mono
                 l1.Text = "📱 " .. tostring(info.Device or "?") .. " • 🌏 " .. tostring(info.Locale or "?")
                 l1.TextColor3 = Config.Colors.Muted
-                l1.TextSize = 9
+                l1.TextSize = 8
                 l1.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local l2 = Instance.new("TextLabel", card)
@@ -1652,13 +1648,12 @@ function OwnerPanel.open(Config, Utils, modules)
                 l2.Font = Config.Fonts.Mono
                 l2.Text = "👑 " .. tostring(info.Role or "?") .. " • ⏰ " .. tostring(info.LastSeenStr or "?")
                 l2.TextColor3 = Config.Colors.Muted
-                l2.TextSize = 9
+                l2.TextSize = 8
                 l2.TextXAlignment = Enum.TextXAlignment.Left
             end
         end)
     end
     
-    -- ============ ANN ============
     local annPage = tabPages["ann"]
     
     local annContainer = Instance.new("Frame", annPage)
@@ -1672,11 +1667,11 @@ function OwnerPanel.open(Config, Utils, modules)
     titleLbl.Font = Config.Fonts.Title
     titleLbl.Text = "📌 Judul:"
     titleLbl.TextColor3 = Config.Colors.Text
-    titleLbl.TextSize = 11
+    titleLbl.TextSize = 10
     titleLbl.TextXAlignment = Enum.TextXAlignment.Left
     
     local titleInput = Instance.new("TextBox", annContainer)
-    titleInput.Size = UDim2.new(1, 0, 0, 28)
+    titleInput.Size = UDim2.new(1, 0, 0, 26)
     titleInput.Position = UDim2.new(0, 0, 0, 22)
     titleInput.BackgroundColor3 = Config.Colors.Card
     titleInput.BorderSizePixel = 0
@@ -1691,17 +1686,17 @@ function OwnerPanel.open(Config, Utils, modules)
     
     local msgLbl = Instance.new("TextLabel", annContainer)
     msgLbl.Size = UDim2.new(1, 0, 0, 18)
-    msgLbl.Position = UDim2.new(0, 0, 0, 56)
+    msgLbl.Position = UDim2.new(0, 0, 0, 54)
     msgLbl.BackgroundTransparency = 1
     msgLbl.Font = Config.Fonts.Title
     msgLbl.Text = "📝 Pesan:"
     msgLbl.TextColor3 = Config.Colors.Text
-    msgLbl.TextSize = 11
+    msgLbl.TextSize = 10
     msgLbl.TextXAlignment = Enum.TextXAlignment.Left
     
     local msgInput = Instance.new("TextBox", annContainer)
     msgInput.Size = UDim2.new(1, 0, 0, 80)
-    msgInput.Position = UDim2.new(0, 0, 0, 78)
+    msgInput.Position = UDim2.new(0, 0, 0, 74)
     msgInput.BackgroundColor3 = Config.Colors.Card
     msgInput.BorderSizePixel = 0
     msgInput.PlaceholderText = "Isi announcement..."
@@ -1715,10 +1710,10 @@ function OwnerPanel.open(Config, Utils, modules)
     Utils.corner(msgInput, Config.Sizes.RadiusSmall)
     
     local sendBtn = Instance.new("TextButton", annContainer)
-    sendBtn.Size = UDim2.new(0.5, -4, 0, 32)
-    sendBtn.Position = UDim2.new(0, 0, 0, 166)
+    sendBtn.Size = UDim2.new(0.5, -4, 0, 30)
+    sendBtn.Position = UDim2.new(0, 0, 0, 162)
     sendBtn.BackgroundColor3 = Color3.fromRGB(20, 100, 40)
-    sendBtn.Text = "📢 KIRIM KE SEMUA"
+    sendBtn.Text = "📢 KIRIM"
     sendBtn.TextColor3 = Config.Colors.Text
     sendBtn.Font = Config.Fonts.Title
     sendBtn.TextSize = 10
@@ -1726,8 +1721,8 @@ function OwnerPanel.open(Config, Utils, modules)
     Utils.corner(sendBtn, Config.Sizes.RadiusSmall)
     
     local clearAnnBtn = Instance.new("TextButton", annContainer)
-    clearAnnBtn.Size = UDim2.new(0.5, -4, 0, 32)
-    clearAnnBtn.Position = UDim2.new(0.5, 4, 0, 166)
+    clearAnnBtn.Size = UDim2.new(0.5, -4, 0, 30)
+    clearAnnBtn.Position = UDim2.new(0.5, 4, 0, 162)
     clearAnnBtn.BackgroundColor3 = Config.Colors.Danger
     clearAnnBtn.Text = "🗑️ HAPUS"
     clearAnnBtn.TextColor3 = Config.Colors.Text
@@ -1762,7 +1757,6 @@ function OwnerPanel.open(Config, Utils, modules)
         end)
     end)
     
-    -- ============ CFG ============
     local cfgPage = tabPages["cfg"]
     local cfgScroll = Instance.new("ScrollingFrame", cfgPage)
     cfgScroll.Size = UDim2.new(1, -16, 1, -16)
@@ -1784,7 +1778,7 @@ function OwnerPanel.open(Config, Utils, modules)
             
             local function addToggle(title, current, callback)
                 local card = Instance.new("Frame", cfgScroll)
-                card.Size = UDim2.new(1, 0, 0, 40)
+                card.Size = UDim2.new(1, 0, 0, 38)
                 card.BackgroundColor3 = Config.Colors.Card
                 card.BorderSizePixel = 0
                 Utils.corner(card, Config.Sizes.RadiusSmall)
@@ -1800,7 +1794,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 t.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local b = Instance.new("TextButton", card)
-                b.Size = UDim2.new(0.35, -8, 0, 26)
+                b.Size = UDim2.new(0.35, -8, 0, 24)
                 b.Position = UDim2.new(0.65, 0, 0, 7)
                 b.BackgroundColor3 = current and Color3.fromRGB(20, 100, 40) or Config.Colors.Danger
                 b.Text = current and "✅ ON" or "❌ OFF"
@@ -1830,7 +1824,7 @@ function OwnerPanel.open(Config, Utils, modules)
             end)
             
             local msgCard = Instance.new("Frame", cfgScroll)
-            msgCard.Size = UDim2.new(1, 0, 0, 60)
+            msgCard.Size = UDim2.new(1, 0, 0, 58)
             msgCard.BackgroundColor3 = Config.Colors.Card
             msgCard.BorderSizePixel = 0
             Utils.corner(msgCard, Config.Sizes.RadiusSmall)
@@ -1846,7 +1840,7 @@ function OwnerPanel.open(Config, Utils, modules)
             ml.TextXAlignment = Enum.TextXAlignment.Left
             
             local msgInput = Instance.new("TextBox", msgCard)
-            msgInput.Size = UDim2.new(1, -12, 0, 30)
+            msgInput.Size = UDim2.new(1, -12, 0, 28)
             msgInput.Position = UDim2.new(0, 6, 0, 22)
             msgInput.BackgroundColor3 = Config.Colors.Base
             msgInput.BorderSizePixel = 0
@@ -1865,7 +1859,6 @@ function OwnerPanel.open(Config, Utils, modules)
         end)
     end
     
-    -- ============ KEY ============
     local keyPage = tabPages["key"]
     local kmContainer = Instance.new("Frame", keyPage)
     kmContainer.Size = UDim2.new(1, 0, 1, 0)

@@ -21,12 +21,14 @@ function Profile.new(parent, options, Config, Utils)
     local roleRainbow = {
         owner = { colors = {
             Color3.fromRGB(255, 0, 0),
+            Color3.fromRGB(255, 128, 0),
             Color3.fromRGB(255, 255, 0),
             Color3.fromRGB(0, 255, 0),
             Color3.fromRGB(0, 255, 255),
             Color3.fromRGB(0, 100, 255),
+            Color3.fromRGB(128, 0, 255),
             Color3.fromRGB(255, 0, 255),
-        }, speed = 1.5 },
+        }, speed = 3 },
         admin = { colors = {
             Color3.fromRGB(100, 180, 255),
             Color3.fromRGB(20, 20, 30),
@@ -135,6 +137,14 @@ function Profile.new(parent, options, Config, Utils)
     
     local currentConn = nil
     
+    local function mixColor(c1, c2, t)
+        return Color3.new(
+            c1.R + (c2.R - c1.R) * t,
+            c1.G + (c2.G - c1.G) * t,
+            c1.B + (c2.B - c1.B) * t
+        )
+    end
+    
     local function applyColor(color)
         cardStroke.Color = color
         avatarStroke.Color = color
@@ -156,32 +166,24 @@ function Profile.new(parent, options, Config, Utils)
         
         local colors = data.colors
         local speed = data.speed
+        local total = #colors
         
-        if roleKey == "owner" then
-            currentConn = RunService.RenderStepped:Connect(function()
-                if not card.Parent then
-                    stopAnimation()
-                    return
-                end
-                local hue = (tick() * 0.3) % 1
-                local c = Color3.fromHSV(hue, 1, 1)
-                applyColor(c)
-            end)
-        else
-            currentConn = RunService.RenderStepped:Connect(function()
-                if not card.Parent then
-                    stopAnimation()
-                    return
-                end
-                local idx = math.floor((tick() * speed) % #colors) + 1
-                local nextIdx = (idx % #colors) + 1
-                local c1 = colors[idx]
-                local c2 = colors[nextIdx]
-                local t = (tick() * speed) % 1
-                local mixed = c1:Lerp(c2, t)
-                applyColor(mixed)
-            end)
-        end
+        currentConn = RunService.Heartbeat:Connect(function()
+            if not card.Parent then
+                stopAnimation()
+                return
+            end
+            
+            local rawIdx = (tick() * speed) % total
+            local idx = math.floor(rawIdx) + 1
+            local nextIdx = (idx % total) + 1
+            local c1 = colors[idx]
+            local c2 = colors[nextIdx]
+            local t = rawIdx - math.floor(rawIdx)
+            
+            local mixed = mixColor(c1, c2, t)
+            applyColor(mixed)
+        end)
     end
     
     card.SetRole = function(_, newRole)
@@ -226,3 +228,5 @@ function Profile.new(parent, options, Config, Utils)
 end
 
 return Profile
+
+tesnya gmn

@@ -71,15 +71,15 @@ function OwnerPanel.open(Config, Utils, modules)
     tabbar.BorderSizePixel = 0
     
     local tabsList = {
-        { id = "wl",   icon = "📋", label = "WL" },
-        { id = "req",  icon = "📩", label = "REQ" },
-        { id = "ban",  icon = "🚫", label = "BAN" },
-        { id = "stat", icon = "📊", label = "STAT" },
-        { id = "log",  icon = "📜", label = "LOG" },
-        { id = "dev",  icon = "📱", label = "DEV" },
-        { id = "ann",  icon = "📢", label = "ANN" },
-        { id = "cfg",  icon = "⚙️", label = "CFG" },
-        { id = "key",  icon = "🔑", label = "KEY" },
+        { id = "wl",   icon = "📋" },
+        { id = "req",  icon = "📩" },
+        { id = "ban",  icon = "🚫" },
+        { id = "stat", icon = "📊" },
+        { id = "log",  icon = "📜" },
+        { id = "dev",  icon = "📱" },
+        { id = "ann",  icon = "📢" },
+        { id = "cfg",  icon = "⚙️" },
+        { id = "key",  icon = "🔑" },
     }
     
     local tabButtons = {}
@@ -122,17 +122,6 @@ function OwnerPanel.open(Config, Utils, modules)
                 p.Visible = (id == tab.id)
             end
             activePage = tab.id
-        end)
-        
-        btn.MouseEnter:Connect(function()
-            if activePage ~= tab.id then
-                Utils.tween(btn, { BackgroundColor3 = Config.Colors.CardHover }, 0.1)
-            end
-        end)
-        btn.MouseLeave:Connect(function()
-            if activePage ~= tab.id then
-                Utils.tween(btn, { BackgroundColor3 = Config.Colors.Base }, 0.1)
-            end
         end)
     end
     
@@ -1877,6 +1866,7 @@ function OwnerPanel.open(Config, Utils, modules)
     toggleFormBtn.Font = Config.Fonts.Title
     toggleFormBtn.TextSize = 11
     toggleFormBtn.BorderSizePixel = 0
+    toggleFormBtn.AutoButtonColor = false
     Utils.corner(toggleFormBtn, Config.Sizes.RadiusSmall)
     
     local formFrame = Instance.new("Frame", keyContainer)
@@ -1884,7 +1874,6 @@ function OwnerPanel.open(Config, Utils, modules)
     formFrame.Position = UDim2.new(0, 0, 0, 34)
     formFrame.BackgroundColor3 = Config.Colors.Card
     formFrame.BorderSizePixel = 0
-    formFrame.ClipsDescendants = true
     formFrame.Visible = false
     Utils.corner(formFrame, Config.Sizes.RadiusSmall)
     Utils.stroke(formFrame, Config.Colors.Accent, 1)
@@ -1993,6 +1982,7 @@ function OwnerPanel.open(Config, Utils, modules)
     genBtn.Font = Config.Fonts.Title
     genBtn.TextSize = 10
     genBtn.BorderSizePixel = 0
+    genBtn.AutoButtonColor = false
     Utils.corner(genBtn, Config.Sizes.RadiusSmall)
     
     local closeFormBtn = Instance.new("TextButton", formFrame)
@@ -2004,6 +1994,7 @@ function OwnerPanel.open(Config, Utils, modules)
     closeFormBtn.Font = Config.Fonts.Title
     closeFormBtn.TextSize = 10
     closeFormBtn.BorderSizePixel = 0
+    closeFormBtn.AutoButtonColor = false
     Utils.corner(closeFormBtn, Config.Sizes.RadiusSmall)
     
     local keyListFrame = Instance.new("Frame", keyContainer)
@@ -2034,28 +2025,14 @@ function OwnerPanel.open(Config, Utils, modules)
         formOpen = open
         if open then
             formFrame.Visible = true
-            formFrame:TweenSize(
-                UDim2.new(1, 0, 0, FORM_HEIGHT),
-                Enum.EasingDirection.Out,
-                Enum.EasingStyle.Quad,
-                0.25,
-                true
-            )
+            formFrame.Size = UDim2.new(1, 0, 0, FORM_HEIGHT)
             toggleFormBtn.Text = "➖ TUTUP FORM"
             toggleFormBtn.BackgroundColor3 = Config.Colors.Danger
             keyListFrame.Position = UDim2.new(0, 0, 0, FORM_HEIGHT + 40)
             keyListFrame.Size = UDim2.new(1, 0, 1, -(FORM_HEIGHT + 40))
         else
-            formFrame:TweenSize(
-                UDim2.new(1, 0, 0, 0),
-                Enum.EasingDirection.Out,
-                Enum.EasingStyle.Quad,
-                0.25,
-                true,
-                function()
-                    formFrame.Visible = false
-                end
-            )
+            formFrame.Size = UDim2.new(1, 0, 0, 0)
+            formFrame.Visible = false
             toggleFormBtn.Text = "➕ GENERATE KEY BARU"
             toggleFormBtn.BackgroundColor3 = Color3.fromRGB(20, 100, 40)
             keyListFrame.Position = UDim2.new(0, 0, 0, 40)
@@ -2144,6 +2121,7 @@ function OwnerPanel.open(Config, Utils, modules)
                 revokeBtn.Font = Config.Fonts.Title
                 revokeBtn.TextSize = 8
                 revokeBtn.BorderSizePixel = 0
+                revokeBtn.AutoButtonColor = false
                 Utils.corner(revokeBtn, Config.Sizes.RadiusSmall)
                 
                 revokeBtn.MouseButton1Click:Connect(function()

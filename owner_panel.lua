@@ -1862,23 +1862,464 @@ function OwnerPanel.open(Config, Utils, modules)
     end
     
     local keyPage = tabPages["key"]
-    local kmContainer = Instance.new("Frame", keyPage)
-    kmContainer.Size = UDim2.new(1, 0, 1, 0)
-    kmContainer.BackgroundTransparency = 1
     
-    local KM = modules.KeyManager
-    KM.new(kmContainer, Config, Utils, {
-        OnNotify = notify,
-        OnGenerate = function(refreshCallback)
-            modules.KeyManagerWindow.showGenerateModalInternal(gui, Config, Utils, modules, notify, refreshCallback)
-        end,
-        OnEdit = function(keyData, refreshCallback)
-            modules.KeyManagerWindow.showEditModalInternal(gui, Config, Utils, modules, notify, keyData, refreshCallback)
-        end,
-        OnRevoke = function(keyData, refreshCallback)
-            modules.KeyManagerWindow.showRevokeConfirmInternal(gui, Config, Utils, modules, notify, keyData, refreshCallback)
-        end,
-    })
+    local keyContainer = Instance.new("Frame", keyPage)
+    keyContainer.Size = UDim2.new(1, -16, 1, -16)
+    keyContainer.Position = UDim2.new(0, 8, 0, 8)
+    keyContainer.BackgroundTransparency = 1
+    
+    local toggleFormBtn = Instance.new("TextButton", keyContainer)
+    toggleFormBtn.Size = UDim2.new(1, 0, 0, 30)
+    toggleFormBtn.Position = UDim2.new(0, 0, 0, 0)
+    toggleFormBtn.BackgroundColor3 = Color3.fromRGB(20, 100, 40)
+    toggleFormBtn.Text = "➕ GENERATE KEY BARU"
+    toggleFormBtn.TextColor3 = Config.Colors.Text
+    toggleFormBtn.Font = Config.Fonts.Title
+    toggleFormBtn.TextSize = 11
+    toggleFormBtn.BorderSizePixel = 0
+    Utils.corner(toggleFormBtn, Config.Sizes.RadiusSmall)
+    
+    local formFrame = Instance.new("Frame", keyContainer)
+    formFrame.Size = UDim2.new(1, 0, 0, 0)
+    formFrame.Position = UDim2.new(0, 0, 0, 34)
+    formFrame.BackgroundColor3 = Config.Colors.Card
+    formFrame.BorderSizePixel = 0
+    formFrame.ClipsDescendants = true
+    formFrame.Visible = false
+    Utils.corner(formFrame, Config.Sizes.RadiusSmall)
+    Utils.stroke(formFrame, Config.Colors.Accent, 1)
+    
+    local formTitle = Instance.new("TextLabel", formFrame)
+    formTitle.Size = UDim2.new(1, -12, 0, 18)
+    formTitle.Position = UDim2.new(0, 8, 0, 6)
+    formTitle.BackgroundTransparency = 1
+    formTitle.Font = Config.Fonts.Title
+    formTitle.Text = "🔑 FORM GENERATE KEY"
+    formTitle.TextColor3 = Config.Colors.Accent
+    formTitle.TextSize = 10
+    formTitle.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local tierLbl = Instance.new("TextLabel", formFrame)
+    tierLbl.Size = UDim2.new(0.5, -10, 0, 12)
+    tierLbl.Position = UDim2.new(0, 8, 0, 28)
+    tierLbl.BackgroundTransparency = 1
+    tierLbl.Font = Config.Fonts.Body
+    tierLbl.Text = "Tier:"
+    tierLbl.TextColor3 = Config.Colors.Muted
+    tierLbl.TextSize = 9
+    tierLbl.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local tierInput = Instance.new("TextBox", formFrame)
+    tierInput.Size = UDim2.new(0.5, -10, 0, 24)
+    tierInput.Position = UDim2.new(0, 8, 0, 42)
+    tierInput.BackgroundColor3 = Config.Colors.Base
+    tierInput.BorderSizePixel = 0
+    tierInput.Text = "vip"
+    tierInput.TextColor3 = Config.Colors.Text
+    tierInput.Font = Config.Fonts.Mono
+    tierInput.TextSize = 10
+    tierInput.ClearTextOnFocus = false
+    Utils.corner(tierInput, Config.Sizes.RadiusSmall)
+    
+    local usageLbl = Instance.new("TextLabel", formFrame)
+    usageLbl.Size = UDim2.new(0.5, -10, 0, 12)
+    usageLbl.Position = UDim2.new(0.5, 2, 0, 28)
+    usageLbl.BackgroundTransparency = 1
+    usageLbl.Font = Config.Fonts.Body
+    usageLbl.Text = "Max Usage:"
+    usageLbl.TextColor3 = Config.Colors.Muted
+    usageLbl.TextSize = 9
+    usageLbl.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local usageInput = Instance.new("TextBox", formFrame)
+    usageInput.Size = UDim2.new(0.5, -10, 0, 24)
+    usageInput.Position = UDim2.new(0.5, 2, 0, 42)
+    usageInput.BackgroundColor3 = Config.Colors.Base
+    usageInput.BorderSizePixel = 0
+    usageInput.Text = "1"
+    usageInput.TextColor3 = Config.Colors.Text
+    usageInput.Font = Config.Fonts.Mono
+    usageInput.TextSize = 10
+    usageInput.ClearTextOnFocus = false
+    Utils.corner(usageInput, Config.Sizes.RadiusSmall)
+    
+    local noteLbl = Instance.new("TextLabel", formFrame)
+    noteLbl.Size = UDim2.new(1, -16, 0, 12)
+    noteLbl.Position = UDim2.new(0, 8, 0, 72)
+    noteLbl.BackgroundTransparency = 1
+    noteLbl.Font = Config.Fonts.Body
+    noteLbl.Text = "Note (opsional):"
+    noteLbl.TextColor3 = Config.Colors.Muted
+    noteLbl.TextSize = 9
+    noteLbl.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local noteInput = Instance.new("TextBox", formFrame)
+    noteInput.Size = UDim2.new(1, -16, 0, 24)
+    noteInput.Position = UDim2.new(0, 8, 0, 86)
+    noteInput.BackgroundColor3 = Config.Colors.Base
+    noteInput.BorderSizePixel = 0
+    noteInput.Text = ""
+    noteInput.PlaceholderText = "contoh: promo ramadhan"
+    noteInput.PlaceholderColor3 = Config.Colors.Muted
+    noteInput.TextColor3 = Config.Colors.Text
+    noteInput.Font = Config.Fonts.Mono
+    noteInput.TextSize = 10
+    noteInput.ClearTextOnFocus = false
+    Utils.corner(noteInput, Config.Sizes.RadiusSmall)
+    
+    local durLbl = Instance.new("TextLabel", formFrame)
+    durLbl.Size = UDim2.new(1, -16, 0, 12)
+    durLbl.Position = UDim2.new(0, 8, 0, 116)
+    durLbl.BackgroundTransparency = 1
+    durLbl.Font = Config.Fonts.Body
+    durLbl.Text = "Duration:"
+    durLbl.TextColor3 = Config.Colors.Muted
+    durLbl.TextSize = 9
+    durLbl.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local durFrame = Instance.new("Frame", formFrame)
+    durFrame.Size = UDim2.new(1, -16, 0, 120)
+    durFrame.Position = UDim2.new(0, 8, 0, 130)
+    durFrame.BackgroundTransparency = 1
+    
+    local picker = modules.DurationPicker.new(durFrame, {}, Config, Utils, nil)
+    
+    local genBtn = Instance.new("TextButton", formFrame)
+    genBtn.Size = UDim2.new(0.5, -10, 0, 28)
+    genBtn.Position = UDim2.new(0, 8, 0, 260)
+    genBtn.BackgroundColor3 = Config.Colors.Accent
+    genBtn.Text = "🔑 CREATE KEY"
+    genBtn.TextColor3 = Config.Colors.Text
+    genBtn.Font = Config.Fonts.Title
+    genBtn.TextSize = 10
+    genBtn.BorderSizePixel = 0
+    Utils.corner(genBtn, Config.Sizes.RadiusSmall)
+    
+    local closeFormBtn = Instance.new("TextButton", formFrame)
+    closeFormBtn.Size = UDim2.new(0.5, -10, 0, 28)
+    closeFormBtn.Position = UDim2.new(0.5, 2, 0, 260)
+    closeFormBtn.BackgroundColor3 = Config.Colors.Danger
+    closeFormBtn.Text = "❌ TUTUP"
+    closeFormBtn.TextColor3 = Config.Colors.Text
+    closeFormBtn.Font = Config.Fonts.Title
+    closeFormBtn.TextSize = 10
+    closeFormBtn.BorderSizePixel = 0
+    Utils.corner(closeFormBtn, Config.Sizes.RadiusSmall)
+    
+    local keyListFrame = Instance.new("Frame", keyContainer)
+    keyListFrame.Size = UDim2.new(1, 0, 1, -40)
+    keyListFrame.Position = UDim2.new(0, 0, 0, 40)
+    keyListFrame.BackgroundColor3 = Config.Colors.Card
+    keyListFrame.BorderSizePixel = 0
+    Utils.corner(keyListFrame, Config.Sizes.RadiusSmall)
+    
+    local keyListScroll = Instance.new("ScrollingFrame", keyListFrame)
+    keyListScroll.Size = UDim2.new(1, -8, 1, -8)
+    keyListScroll.Position = UDim2.new(0, 4, 0, 4)
+    keyListScroll.BackgroundTransparency = 1
+    keyListScroll.BorderSizePixel = 0
+    keyListScroll.ScrollBarThickness = 4
+    keyListScroll.ScrollBarImageColor3 = Config.Colors.Accent
+    keyListScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    keyListScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    
+    local keyListLayout = Instance.new("UIListLayout", keyListScroll)
+    keyListLayout.Padding = UDim.new(0, 6)
+    keyListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    
+    local formOpen = false
+    local FORM_HEIGHT = 300
+    
+    local function setFormOpen(open)
+        formOpen = open
+        if open then
+            formFrame.Visible = true
+            formFrame:TweenSize(
+                UDim2.new(1, 0, 0, FORM_HEIGHT),
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Quad,
+                0.25,
+                true
+            )
+            toggleFormBtn.Text = "➖ TUTUP FORM"
+            toggleFormBtn.BackgroundColor3 = Config.Colors.Danger
+            keyListFrame.Position = UDim2.new(0, 0, 0, FORM_HEIGHT + 40)
+            keyListFrame.Size = UDim2.new(1, 0, 1, -(FORM_HEIGHT + 40))
+        else
+            formFrame:TweenSize(
+                UDim2.new(1, 0, 0, 0),
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Quad,
+                0.25,
+                true,
+                function()
+                    formFrame.Visible = false
+                end
+            )
+            toggleFormBtn.Text = "➕ GENERATE KEY BARU"
+            toggleFormBtn.BackgroundColor3 = Color3.fromRGB(20, 100, 40)
+            keyListFrame.Position = UDim2.new(0, 0, 0, 40)
+            keyListFrame.Size = UDim2.new(1, 0, 1, -40)
+        end
+    end
+    
+    toggleFormBtn.MouseButton1Click:Connect(function()
+        setFormOpen(not formOpen)
+    end)
+    
+    closeFormBtn.MouseButton1Click:Connect(function()
+        setFormOpen(false)
+    end)
+    
+    local function renderKeyList()
+        for _, child in ipairs(keyListScroll:GetChildren()) do
+            if child:IsA("Frame") or child:IsA("TextLabel") or child:IsA("TextButton") then
+                child:Destroy()
+            end
+        end
+        
+        apiCall("GET", "/get?path=" .. HttpService:UrlEncode("/Keys"), nil, function(data)
+            if not data or type(data) ~= "table" then
+                local empty = Instance.new("TextLabel", keyListScroll)
+                empty.Size = UDim2.new(1, 0, 0, 40)
+                empty.BackgroundTransparency = 1
+                empty.Font = Config.Fonts.Body
+                empty.Text = "Belum ada key"
+                empty.TextColor3 = Config.Colors.Muted
+                empty.TextSize = 10
+                return
+            end
+            
+            local count = 0
+            for keyStr, info in pairs(data) do
+                count = count + 1
+                
+                local card = Instance.new("Frame", keyListScroll)
+                card.Size = UDim2.new(1, 0, 0, 70)
+                card.BackgroundColor3 = Config.Colors.Base
+                card.BorderSizePixel = 0
+                Utils.corner(card, Config.Sizes.RadiusSmall)
+                
+                local keyLbl = Instance.new("TextLabel", card)
+                keyLbl.Size = UDim2.new(1, -80, 0, 16)
+                keyLbl.Position = UDim2.new(0, 6, 0, 4)
+                keyLbl.BackgroundTransparency = 1
+                keyLbl.Font = Config.Fonts.Mono
+                keyLbl.Text = tostring(keyStr)
+                keyLbl.TextColor3 = Config.Colors.Accent
+                keyLbl.TextSize = 10
+                keyLbl.TextXAlignment = Enum.TextXAlignment.Left
+                
+                local infoTxt = "Tier: " .. tostring(info.tier or info.Tier or "?")
+                    .. " • Usage: " .. tostring(info.maxUsage or info.MaxUsage or "?")
+                    .. " • Note: " .. tostring(info.note or info.Note or "-")
+                
+                local infoLbl = Instance.new("TextLabel", card)
+                infoLbl.Size = UDim2.new(1, -12, 0, 12)
+                infoLbl.Position = UDim2.new(0, 6, 0, 22)
+                infoLbl.BackgroundTransparency = 1
+                infoLbl.Font = Config.Fonts.Mono
+                infoLbl.Text = infoTxt
+                infoLbl.TextColor3 = Config.Colors.Muted
+                infoLbl.TextSize = 8
+                infoLbl.TextXAlignment = Enum.TextXAlignment.Left
+                
+                local statusTxt = "Status: " .. tostring(info.status or info.Status or "active")
+                local statusLbl = Instance.new("TextLabel", card)
+                statusLbl.Size = UDim2.new(1, -12, 0, 12)
+                statusLbl.Position = UDim2.new(0, 6, 0, 36)
+                statusLbl.BackgroundTransparency = 1
+                statusLbl.Font = Config.Fonts.Mono
+                statusLbl.Text = statusTxt
+                statusLbl.TextColor3 = Config.Colors.Muted
+                statusLbl.TextSize = 8
+                statusLbl.TextXAlignment = Enum.TextXAlignment.Left
+                
+                local revokeBtn = Instance.new("TextButton", card)
+                revokeBtn.Size = UDim2.new(0, 70, 0, 22)
+                revokeBtn.Position = UDim2.new(1, -76, 1, -28)
+                revokeBtn.BackgroundColor3 = Config.Colors.Danger
+                revokeBtn.Text = "🔨 REVOKE"
+                revokeBtn.TextColor3 = Config.Colors.Text
+                revokeBtn.Font = Config.Fonts.Title
+                revokeBtn.TextSize = 8
+                revokeBtn.BorderSizePixel = 0
+                Utils.corner(revokeBtn, Config.Sizes.RadiusSmall)
+                
+                revokeBtn.MouseButton1Click:Connect(function()
+                    local confirmOverlay = Instance.new("Frame", gui)
+                    confirmOverlay.Size = UDim2.new(1, 0, 1, 0)
+                    confirmOverlay.BackgroundColor3 = Color3.new(0, 0, 0)
+                    confirmOverlay.BackgroundTransparency = 0.5
+                    confirmOverlay.BorderSizePixel = 0
+                    confirmOverlay.ZIndex = 1000
+                    
+                    local confirmModal = Instance.new("Frame", confirmOverlay)
+                    confirmModal.Size = UDim2.new(0, 260, 0, 140)
+                    confirmModal.Position = UDim2.new(0.5, -130, 0.5, -70)
+                    confirmModal.BackgroundColor3 = Config.Colors.Card
+                    confirmModal.BorderSizePixel = 0
+                    confirmModal.ZIndex = 1001
+                    Utils.corner(confirmModal, Config.Sizes.Radius)
+                    Utils.stroke(confirmModal, Config.Colors.Danger, 1)
+                    
+                    local ct = Instance.new("TextLabel", confirmModal)
+                    ct.Size = UDim2.new(1, -20, 0, 22)
+                    ct.Position = UDim2.new(0, 10, 0, 10)
+                    ct.BackgroundTransparency = 1
+                    ct.Font = Config.Fonts.Title
+                    ct.Text = "🔨 REVOKE KEY?"
+                    ct.TextColor3 = Config.Colors.Danger
+                    ct.TextSize = 11
+                    ct.TextXAlignment = Enum.TextXAlignment.Left
+                    ct.ZIndex = 1002
+                    
+                    local cm = Instance.new("TextLabel", confirmModal)
+                    cm.Size = UDim2.new(1, -20, 0, 40)
+                    cm.Position = UDim2.new(0, 10, 0, 38)
+                    cm.BackgroundTransparency = 1
+                    cm.Font = Config.Fonts.Mono
+                    cm.Text = tostring(keyStr) .. "\nYakin revoke?"
+                    cm.TextColor3 = Config.Colors.Text
+                    cm.TextSize = 9
+                    cm.TextWrapped = true
+                    cm.ZIndex = 1002
+                    
+                    local okBtn = Instance.new("TextButton", confirmModal)
+                    okBtn.Size = UDim2.new(0.5, -15, 0, 26)
+                    okBtn.Position = UDim2.new(0, 10, 1, -36)
+                    okBtn.BackgroundColor3 = Config.Colors.Danger
+                    okBtn.Text = "REVOKE"
+                    okBtn.TextColor3 = Config.Colors.Text
+                    okBtn.Font = Config.Fonts.Title
+                    okBtn.TextSize = 10
+                    okBtn.BorderSizePixel = 0
+                    okBtn.ZIndex = 1002
+                    Utils.corner(okBtn, Config.Sizes.RadiusSmall)
+                    
+                    local noBtn = Instance.new("TextButton", confirmModal)
+                    noBtn.Size = UDim2.new(0.5, -15, 0, 26)
+                    noBtn.Position = UDim2.new(0.5, 5, 1, -36)
+                    noBtn.BackgroundColor3 = Config.Colors.Card
+                    noBtn.Text = "BATAL"
+                    noBtn.TextColor3 = Config.Colors.Text
+                    noBtn.Font = Config.Fonts.Title
+                    noBtn.TextSize = 10
+                    noBtn.BorderSizePixel = 0
+                    noBtn.ZIndex = 1002
+                    Utils.corner(noBtn, Config.Sizes.RadiusSmall)
+                    
+                    noBtn.MouseButton1Click:Connect(function()
+                        confirmOverlay:Destroy()
+                    end)
+                    
+                    okBtn.MouseButton1Click:Connect(function()
+                        task.spawn(function()
+                            local opts = {
+                                Url = BACKEND .. "/key/revoke",
+                                Method = "POST",
+                                Headers = {
+                                    ["Content-Type"] = "application/json",
+                                    ["X-User-Id"] = tostring(LocalPlayer.UserId),
+                                },
+                                Body = HttpService:JSONEncode({
+                                    key = keyStr,
+                                    deleteUser = false,
+                                }),
+                            }
+                            
+                            local ok2, res2 = pcall(function() return request(opts) end)
+                            if ok2 and res2 then
+                                local decoded2 = nil
+                                pcall(function() decoded2 = HttpService:JSONDecode(res2.Body) end)
+                                if decoded2 and decoded2.ok then
+                                    confirmOverlay:Destroy()
+                                    notify("🔨 Revoked", keyStr, 3)
+                                    renderKeyList()
+                                else
+                                    notify("❌ Gagal", decoded2 and decoded2.error or "Unknown", 3)
+                                end
+                            end
+                        end)
+                    end)
+                end)
+            end
+            
+            if count == 0 then
+                local empty = Instance.new("TextLabel", keyListScroll)
+                empty.Size = UDim2.new(1, 0, 0, 40)
+                empty.BackgroundTransparency = 1
+                empty.Font = Config.Fonts.Body
+                empty.Text = "Belum ada key"
+                empty.TextColor3 = Config.Colors.Muted
+                empty.TextSize = 10
+            end
+        end)
+    end
+    
+    genBtn.MouseButton1Click:Connect(function()
+        local durData = picker.GetValue()
+        local tier = tierInput.Text ~= "" and tierInput.Text or "user"
+        local maxUsage = tonumber(usageInput.Text) or 1
+        local note = noteInput.Text
+        
+        local body = {
+            tier = tier,
+            maxUsage = maxUsage,
+            note = note,
+            count = 1,
+        }
+        
+        if durData.unit == "lifetime" then
+            body.amount = 0
+            body.unit = "lifetime"
+        else
+            body.amount = durData.amount
+            body.unit = durData.unit
+        end
+        
+        genBtn.Text = "⏳ LOADING..."
+        genBtn.BackgroundColor3 = Config.Colors.Muted
+        
+        task.spawn(function()
+            local opts = {
+                Url = BACKEND .. "/key/generate",
+                Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json",
+                    ["X-User-Id"] = tostring(LocalPlayer.UserId),
+                },
+                Body = HttpService:JSONEncode(body),
+            }
+            
+            local ok, res = pcall(function() return request(opts) end)
+            
+            if ok and res then
+                local decoded = nil
+                pcall(function() decoded = HttpService:JSONDecode(res.Body) end)
+                
+                if decoded and decoded.ok then
+                    local key = decoded.key or (decoded.keys and decoded.keys[1]) or "?"
+                    genBtn.Text = "🔑 CREATE KEY"
+                    genBtn.BackgroundColor3 = Config.Colors.Accent
+                    notify("🔑 Key Generated", key, 8)
+                    pcall(function() setclipboard(key) end)
+                    setFormOpen(false)
+                    renderKeyList()
+                else
+                    genBtn.Text = "🔑 CREATE KEY"
+                    genBtn.BackgroundColor3 = Config.Colors.Accent
+                    notify("❌ Gagal", decoded and decoded.error or "Unknown", 3)
+                end
+            else
+                genBtn.Text = "🔑 CREATE KEY"
+                genBtn.BackgroundColor3 = Config.Colors.Accent
+                notify("❌ Network Error", "Coba lagi", 3)
+            end
+        end)
+    end)
+    
+    renderKeyList()
     
     renderWL()
     renderReq()

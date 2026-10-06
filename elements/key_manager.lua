@@ -15,8 +15,8 @@ function KeyManager.new(parent, Config, Utils, options)
     
     local toolbar = Instance.new("Frame", root)
     toolbar.Name = "Toolbar"
-    toolbar.Size = UDim2.new(1, -20, 0, 30)
-    toolbar.Position = UDim2.new(0, 10, 0, 4)
+    toolbar.Size = UDim2.new(1, -16, 0, 32)
+    toolbar.Position = UDim2.new(0, 8, 0, 4)
     toolbar.BackgroundTransparency = 1
     toolbar.ZIndex = 20
     
@@ -25,7 +25,7 @@ function KeyManager.new(parent, Config, Utils, options)
     toolbarLayout.Padding = UDim.new(0, 6)
     toolbarLayout.SortOrder = Enum.SortOrder.LayoutOrder
     
-    local function makeToolbarBtn(text, color, hoverColor, width, callback)
+    local function makeToolbarBtn(text, color, hoverColor, width, layoutOrder, callback)
         local btn = Instance.new("TextButton", toolbar)
         btn.Size = UDim2.new(0, width, 1, 0)
         btn.BackgroundColor3 = color
@@ -35,6 +35,7 @@ function KeyManager.new(parent, Config, Utils, options)
         btn.TextSize = 10
         btn.BorderSizePixel = 0
         btn.AutoButtonColor = false
+        btn.LayoutOrder = layoutOrder
         btn.ZIndex = 21
         Utils.corner(btn, Config.Sizes.RadiusSmall)
         Utils.stroke(btn, Config.Colors.Border, 1)
@@ -43,16 +44,13 @@ function KeyManager.new(parent, Config, Utils, options)
         return btn
     end
     
-    local generateBtn = makeToolbarBtn("➕ Generate", Config.Colors.Accent, Config.Colors.AccentDim, 105, nil)
-    generateBtn.LayoutOrder = 1
-    
-    local refreshBtn = makeToolbarBtn("🔄 Refresh", Config.Colors.Card, Config.Colors.CardHover, 90, nil)
-    refreshBtn.LayoutOrder = 2
+    local generateBtn = makeToolbarBtn("➕ Generate Key", Config.Colors.Accent, Config.Colors.AccentDim, 130, 1, nil)
+    local refreshBtn = makeToolbarBtn("🔄 Refresh", Config.Colors.Card, Config.Colors.CardHover, 90, 2, nil)
     
     local statsBar = Instance.new("Frame", root)
     statsBar.Name = "StatsBar"
-    statsBar.Size = UDim2.new(1, -20, 0, 32)
-    statsBar.Position = UDim2.new(0, 10, 0, 38)
+    statsBar.Size = UDim2.new(1, -16, 0, 30)
+    statsBar.Position = UDim2.new(0, 8, 0, 42)
     statsBar.BackgroundColor3 = Config.Colors.Card
     statsBar.BorderSizePixel = 0
     statsBar.ZIndex = 15
@@ -72,8 +70,8 @@ function KeyManager.new(parent, Config, Utils, options)
     
     local scroll = Instance.new("ScrollingFrame", root)
     scroll.Name = "KeyScroll"
-    scroll.Size = UDim2.new(1, -20, 1, -80)
-    scroll.Position = UDim2.new(0, 10, 0, 76)
+    scroll.Size = UDim2.new(1, -16, 1, -82)
+    scroll.Position = UDim2.new(0, 8, 0, 78)
     scroll.BackgroundColor3 = Config.Colors.Card
     scroll.BorderSizePixel = 0
     scroll.ScrollBarThickness = 4
@@ -150,7 +148,7 @@ function KeyManager.new(parent, Config, Utils, options)
     local function makeKeyCard(keyData, isUsedSection)
         local card = Instance.new("Frame", scroll)
         card.Name = "KeyCard"
-        card.Size = UDim2.new(1, 0, 0, isUsedSection and 105 or 90)
+        card.Size = UDim2.new(1, 0, 0, isUsedSection and 100 or 88)
         card.BackgroundColor3 = Config.Colors.Base
         card.BorderSizePixel = 0
         card.ZIndex = 16
@@ -170,7 +168,7 @@ function KeyManager.new(parent, Config, Utils, options)
         end
         
         local keyLabel = Instance.new("TextLabel", card)
-        keyLabel.Size = UDim2.new(1, -100, 0, 18)
+        keyLabel.Size = UDim2.new(1, -100, 0, 16)
         keyLabel.Position = UDim2.new(0, 10, 0, 8)
         keyLabel.BackgroundTransparency = 1
         keyLabel.Font = Config.Fonts.Mono
@@ -181,8 +179,8 @@ function KeyManager.new(parent, Config, Utils, options)
         keyLabel.ZIndex = 17
         
         local tierBadge = Instance.new("Frame", card)
-        tierBadge.Size = UDim2.new(0, 80, 0, 20)
-        tierBadge.Position = UDim2.new(1, -90, 0, 8)
+        tierBadge.Size = UDim2.new(0, 78, 0, 18)
+        tierBadge.Position = UDim2.new(1, -88, 0, 8)
         tierBadge.BackgroundColor3 = tierColors
         tierBadge.BackgroundTransparency = 0.85
         tierBadge.BorderSizePixel = 0
@@ -194,19 +192,19 @@ function KeyManager.new(parent, Config, Utils, options)
         tierStroke.Thickness = 1
         
         local tierIconLbl = Instance.new("TextLabel", tierBadge)
-        tierIconLbl.Size = UDim2.new(0, 18, 1, 0)
+        tierIconLbl.Size = UDim2.new(0, 16, 1, 0)
         tierIconLbl.Position = UDim2.new(0, 4, 0, 0)
         tierIconLbl.BackgroundTransparency = 1
         tierIconLbl.Font = Config.Fonts.Title
         tierIconLbl.Text = tierIcon
         tierIconLbl.TextColor3 = tierColors
-        tierIconLbl.TextSize = 11
+        tierIconLbl.TextSize = 10
         tierIconLbl.TextXAlignment = Enum.TextXAlignment.Left
         tierIconLbl.ZIndex = 18
         
         local tierTextLbl = Instance.new("TextLabel", tierBadge)
-        tierTextLbl.Size = UDim2.new(1, -24, 1, 0)
-        tierTextLbl.Position = UDim2.new(0, 22, 0, 0)
+        tierTextLbl.Size = UDim2.new(1, -22, 1, 0)
+        tierTextLbl.Position = UDim2.new(0, 20, 0, 0)
         tierTextLbl.BackgroundTransparency = 1
         tierTextLbl.Font = Config.Fonts.Title
         tierTextLbl.Text = string.upper(keyData.tier)
@@ -216,8 +214,8 @@ function KeyManager.new(parent, Config, Utils, options)
         tierTextLbl.ZIndex = 18
         
         local infoLabel = Instance.new("TextLabel", card)
-        infoLabel.Size = UDim2.new(1, -20, 0, 14)
-        infoLabel.Position = UDim2.new(0, 10, 0, 30)
+        infoLabel.Size = UDim2.new(1, -20, 0, 12)
+        infoLabel.Position = UDim2.new(0, 10, 0, 28)
         infoLabel.BackgroundTransparency = 1
         infoLabel.Font = Config.Fonts.Mono
         infoLabel.Text = "📊 Usage: " .. keyData.usedCount .. "/" .. keyData.maxUsage .. " • ⏱️ " .. keyData.duration
@@ -228,10 +226,10 @@ function KeyManager.new(parent, Config, Utils, options)
         
         local createdLabel = Instance.new("TextLabel", card)
         createdLabel.Size = UDim2.new(1, -20, 0, 12)
-        createdLabel.Position = UDim2.new(0, 10, 0, 46)
+        createdLabel.Position = UDim2.new(0, 10, 0, 42)
         createdLabel.BackgroundTransparency = 1
         createdLabel.Font = Config.Fonts.Mono
-        createdLabel.Text = "👤 Created by: " .. keyData.createdBy
+        createdLabel.Text = "👤 " .. keyData.createdBy
         createdLabel.TextColor3 = Config.Colors.Muted
         createdLabel.TextSize = 8
         createdLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -240,10 +238,10 @@ function KeyManager.new(parent, Config, Utils, options)
         if isUsedSection then
             local usedLabel = Instance.new("TextLabel", card)
             usedLabel.Size = UDim2.new(1, -20, 0, 12)
-            usedLabel.Position = UDim2.new(0, 10, 0, 60)
+            usedLabel.Position = UDim2.new(0, 10, 0, 56)
             usedLabel.BackgroundTransparency = 1
             usedLabel.Font = Config.Fonts.Mono
-            usedLabel.Text = "👥 Used by: " .. (keyData.usedBy or "?")
+            usedLabel.Text = "👥 " .. (keyData.usedBy or "?")
             usedLabel.TextColor3 = Config.Colors.Muted
             usedLabel.TextSize = 8
             usedLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -277,7 +275,7 @@ function KeyManager.new(parent, Config, Utils, options)
             return btn
         end
         
-        makeActionBtn("📋 Copy", Config.Colors.Card, 68, function()
+        makeActionBtn("📋 Copy", Color3.fromRGB(40, 60, 40), 68, function()
             pcall(function()
                 if setclipboard then
                     setclipboard(keyData.key)
@@ -288,7 +286,7 @@ function KeyManager.new(parent, Config, Utils, options)
             end
         end)
         
-        makeActionBtn("✏️ Edit", Config.Colors.Card, 68, function()
+        makeActionBtn("✏️ Edit", Color3.fromRGB(60, 40, 100), 68, function()
             if options.OnEdit then
                 options.OnEdit(keyData, function()
                     if options.OnRefresh then options.OnRefresh() end
@@ -327,12 +325,12 @@ function KeyManager.new(parent, Config, Utils, options)
             if not list or #list == 0 then return end
             
             local header = Instance.new("TextLabel", scroll)
-            header.Size = UDim2.new(1, 0, 0, 22)
+            header.Size = UDim2.new(1, 0, 0, 20)
             header.BackgroundTransparency = 1
             header.Font = Config.Fonts.Title
             header.Text = title .. " (" .. #list .. ")"
             header.TextColor3 = Config.Colors.Accent
-            header.TextSize = 11
+            header.TextSize = 10
             header.TextXAlignment = Enum.TextXAlignment.Left
             header.ZIndex = 16
             
@@ -353,9 +351,9 @@ function KeyManager.new(parent, Config, Utils, options)
             emptyLbl.Size = UDim2.new(1, 0, 0, 60)
             emptyLbl.BackgroundTransparency = 1
             emptyLbl.Font = Config.Fonts.Body
-            emptyLbl.Text = "Belum ada key.\nKlik ➕ Generate buat bikin key baru."
+            emptyLbl.Text = "Belum ada key.\nKlik ➕ Generate Key di atas buat bikin key baru."
             emptyLbl.TextColor3 = Config.Colors.Muted
-            emptyLbl.TextSize = 11
+            emptyLbl.TextSize = 10
             emptyLbl.TextWrapped = true
             emptyLbl.ZIndex = 16
         end

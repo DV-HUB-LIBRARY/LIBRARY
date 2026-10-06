@@ -14,8 +14,8 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     overlay.ZIndex = 500
     
     local modal = Instance.new("Frame", overlay)
-    modal.Size = UDim2.new(0, 320, 0, 400)
-    modal.Position = UDim2.new(0.5, -160, 0.5, -200)
+    modal.Size = UDim2.new(0, 320, 0, 420)
+    modal.Position = UDim2.new(0.5, -160, 0.5, -210)
     modal.BackgroundColor3 = Config.Colors.Card
     modal.BorderSizePixel = 0
     modal.ZIndex = 501
@@ -23,7 +23,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     Utils.stroke(modal, Config.Colors.Accent, 1)
     
     local mTitle = Instance.new("TextLabel", modal)
-    mTitle.Size = UDim2.new(1, -20, 0, 26)
+    mTitle.Size = UDim2.new(1, -60, 0, 26)
     mTitle.Position = UDim2.new(0, 14, 0, 10)
     mTitle.BackgroundTransparency = 1
     mTitle.Font = Config.Fonts.Title
@@ -32,6 +32,21 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     mTitle.TextSize = 13
     mTitle.TextXAlignment = Enum.TextXAlignment.Left
     mTitle.ZIndex = 502
+    
+    local closeBtn = Instance.new("TextButton", modal)
+    closeBtn.Size = UDim2.new(0, 24, 0, 24)
+    closeBtn.Position = UDim2.new(1, -32, 0, 10)
+    closeBtn.BackgroundColor3 = Config.Colors.Danger
+    closeBtn.Text = "✕"
+    closeBtn.TextColor3 = Config.Colors.Text
+    closeBtn.Font = Config.Fonts.Title
+    closeBtn.TextSize = 12
+    closeBtn.BorderSizePixel = 0
+    closeBtn.ZIndex = 503
+    Utils.corner(closeBtn, 5)
+    closeBtn.MouseButton1Click:Connect(function()
+        overlay:Destroy()
+    end)
     
     local contentFrame = Instance.new("Frame", modal)
     contentFrame.Size = UDim2.new(1, -28, 1, -90)
@@ -196,8 +211,8 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     overlay.ZIndex = 500
     
     local modal = Instance.new("Frame", overlay)
-    modal.Size = UDim2.new(0, 320, 0, 360)
-    modal.Position = UDim2.new(0.5, -160, 0.5, -180)
+    modal.Size = UDim2.new(0, 320, 0, 380)
+    modal.Position = UDim2.new(0.5, -160, 0.5, -190)
     modal.BackgroundColor3 = Config.Colors.Card
     modal.BorderSizePixel = 0
     modal.ZIndex = 501
@@ -205,7 +220,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     Utils.stroke(modal, Config.Colors.Accent, 1)
     
     local mTitle = Instance.new("TextLabel", modal)
-    mTitle.Size = UDim2.new(1, -20, 0, 26)
+    mTitle.Size = UDim2.new(1, -60, 0, 26)
     mTitle.Position = UDim2.new(0, 14, 0, 10)
     mTitle.BackgroundTransparency = 1
     mTitle.Font = Config.Fonts.Title
@@ -214,6 +229,21 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     mTitle.TextSize = 13
     mTitle.TextXAlignment = Enum.TextXAlignment.Left
     mTitle.ZIndex = 502
+    
+    local closeBtn = Instance.new("TextButton", modal)
+    closeBtn.Size = UDim2.new(0, 24, 0, 24)
+    closeBtn.Position = UDim2.new(1, -32, 0, 10)
+    closeBtn.BackgroundColor3 = Config.Colors.Danger
+    closeBtn.Text = "✕"
+    closeBtn.TextColor3 = Config.Colors.Text
+    closeBtn.Font = Config.Fonts.Title
+    closeBtn.TextSize = 12
+    closeBtn.BorderSizePixel = 0
+    closeBtn.ZIndex = 503
+    Utils.corner(closeBtn, 5)
+    closeBtn.MouseButton1Click:Connect(function()
+        overlay:Destroy()
+    end)
     
     local keyLbl = Instance.new("TextLabel", modal)
     keyLbl.Size = UDim2.new(1, -20, 0, 14)
@@ -387,14 +417,30 @@ function KeyManagerWindow.showRevokeConfirmInternal(parentGui, Config, Utils, mo
     Utils.corner(modal, Config.Sizes.Radius)
     Utils.stroke(modal, Config.Colors.Danger, 1)
     
+    local closeBtn = Instance.new("TextButton", modal)
+    closeBtn.Size = UDim2.new(0, 24, 0, 24)
+    closeBtn.Position = UDim2.new(1, -32, 0, 10)
+    closeBtn.BackgroundColor3 = Config.Colors.Danger
+    closeBtn.Text = "✕"
+    closeBtn.TextColor3 = Config.Colors.Text
+    closeBtn.Font = Config.Fonts.Title
+    closeBtn.TextSize = 12
+    closeBtn.BorderSizePixel = 0
+    closeBtn.ZIndex = 603
+    Utils.corner(closeBtn, 5)
+    closeBtn.MouseButton1Click:Connect(function()
+        overlay:Destroy()
+    end)
+    
     local t = Instance.new("TextLabel", modal)
-    t.Size = UDim2.new(1, -20, 0, 26)
+    t.Size = UDim2.new(1, -60, 0, 26)
     t.Position = UDim2.new(0, 10, 0, 10)
     t.BackgroundTransparency = 1
     t.Font = Config.Fonts.Title
     t.Text = "🗑️ REVOKE KEY?"
     t.TextColor3 = Config.Colors.Danger
     t.TextSize = 13
+    t.TextXAlignment = Enum.TextXAlignment.Left
     t.ZIndex = 602
     
     local m = Instance.new("TextLabel", modal)

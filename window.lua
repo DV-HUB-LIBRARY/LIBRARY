@@ -1,4 +1,5 @@
 local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
 local Window = {}
@@ -6,10 +7,10 @@ local Window = {}
 function Window.new(options)
     options = options or {}
     
-    local BASE = "https://raw.githubusercontent.com/DV-HUB-LIBRARY/LIBRARY/main"
+    local BASE = "https://raw.githack.com/DV-HUB-LIBRARY/LIBRARY/main"
     
-    local Config = options.Config or loadstring(game:HttpGet(BASE .. "/config.lua"))()
-    local Utils = options.Utils or loadstring(game:HttpGet(BASE .. "/utils.lua"))()
+    local Config = options.Config or loadstring(game:HttpGet(BASE .. "/config.lua?v=" .. os.time()))()
+    local Utils = options.Utils or loadstring(game:HttpGet(BASE .. "/utils.lua?v=" .. os.time()))()
     
     if not Config or not Utils then
         warn("[DVLlib] Config atau Utils gagal di-load!")
@@ -173,6 +174,24 @@ function Window.new(options)
     content.Parent = win
     self.Content = content
     
+    local hideIcon = Instance.new("TextButton")
+    hideIcon.Name = "HideIcon"
+    hideIcon.Size = UDim2.new(0, 46, 0, 46)
+    hideIcon.Position = UDim2.new(0, 15, 0.5, -23)
+    hideIcon.BackgroundColor3 = Config.Colors.Card
+    hideIcon.Text = "⚡"
+    hideIcon.TextColor3 = Config.Colors.Accent
+    hideIcon.Font = Config.Fonts.Black
+    hideIcon.TextSize = 22
+    hideIcon.BorderSizePixel = 0
+    hideIcon.Visible = false
+    hideIcon.ZIndex = 200
+    hideIcon.Active = true
+    hideIcon.Parent = screenGui
+    Utils.corner(hideIcon, 999)
+    Utils.stroke(hideIcon, Config.Colors.Accent, 2)
+    self.HideIcon = hideIcon
+    
     self.BtnClose.MouseButton1Click:Connect(function()
         if self.ScreenGui then
             self.ScreenGui:Destroy()
@@ -201,6 +220,50 @@ function Window.new(options)
     self.BtnHide.MouseButton1Click:Connect(function()
         self.IsHidden = true
         self.Frame.Visible = false
+        hideIcon.Visible = true
+        hideIcon.Size = UDim2.new(0, 0, 0, 0)
+        TweenService:Create(hideIcon, TweenInfo.new(0.3, Enum.EasingStyle.Back), {
+            Size = UDim2.new(0, 46, 0, 46)
+        }):Play()
+    end)
+    
+    local dragging = false
+    local dragStart = nil
+    local startPos = nil
+    
+    hideIcon.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+            dragStart = input.Position
+            startPos = hideIcon.Position
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if dragStart and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            if math.abs(delta.X) > 5 or math.abs(delta.Y) > 5 then
+                dragging = true
+            end
+            if dragging then
+                hideIcon.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            end
+        end
+    end)
+    
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragStart = nil
+            task.wait(0.05)
+            dragging = false
+        end
+    end)
+    
+    hideIcon.MouseButton1Click:Connect(function()
+        if dragging then return end
+        self.IsHidden = false
+        self.Frame.Visible = true
+        hideIcon.Visible = false
     end)
     
     return self

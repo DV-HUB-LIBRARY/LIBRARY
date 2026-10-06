@@ -532,11 +532,12 @@ function OwnerPanel.open(Config, Utils, modules)
         overlay.ZIndex = 500
         
         local modal = Instance.new("Frame", overlay)
-        modal.Size = UDim2.new(0, 300, 0, 260)
-        modal.Position = UDim2.new(0.5, -150, 0.5, -130)
+        modal.Size = UDim2.new(0, 300, 0, 340)
+        modal.Position = UDim2.new(0.5, -150, 0.5, -170)
         modal.BackgroundColor3 = Config.Colors.Card
         modal.BorderSizePixel = 0
         modal.ZIndex = 501
+        modal.ClipsDescendants = true
         Utils.corner(modal, Config.Sizes.Radius)
         Utils.stroke(modal, Config.Colors.Accent, 1)
         
@@ -576,7 +577,7 @@ function OwnerPanel.open(Config, Utils, modules)
         u.ZIndex = 502
         
         local durFrame = Instance.new("Frame", modal)
-        durFrame.Size = UDim2.new(1, -20, 0, 130)
+        durFrame.Size = UDim2.new(1, -20, 0, 230)
         durFrame.Position = UDim2.new(0, 10, 0, 50)
         durFrame.BackgroundTransparency = 1
         durFrame.ZIndex = 502
@@ -645,11 +646,12 @@ function OwnerPanel.open(Config, Utils, modules)
         overlay.ZIndex = 500
         
         local modal = Instance.new("Frame", overlay)
-        modal.Size = UDim2.new(0, 300, 0, 260)
-        modal.Position = UDim2.new(0.5, -150, 0.5, -130)
+        modal.Size = UDim2.new(0, 320, 0, 400)
+        modal.Position = UDim2.new(0.5, -160, 0.5, -200)
         modal.BackgroundColor3 = Config.Colors.Card
         modal.BorderSizePixel = 0
         modal.ZIndex = 501
+        modal.ClipsDescendants = true
         Utils.corner(modal, Config.Sizes.Radius)
         Utils.stroke(modal, Config.Colors.Danger, 1)
         
@@ -726,7 +728,7 @@ function OwnerPanel.open(Config, Utils, modules)
         durLbl.ZIndex = 502
         
         local durFrame = Instance.new("Frame", modal)
-        durFrame.Size = UDim2.new(1, -20, 0, 78)
+        durFrame.Size = UDim2.new(1, -20, 0, 240)
         durFrame.Position = UDim2.new(0, 10, 0, 110)
         durFrame.BackgroundTransparency = 1
         durFrame.ZIndex = 502

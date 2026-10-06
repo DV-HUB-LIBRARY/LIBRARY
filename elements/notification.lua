@@ -12,7 +12,7 @@ function Notification.send(window, options, Config, Utils)
     local notif = Instance.new("Frame")
     notif.Name = "Notification"
     notif.Size = UDim2.new(0, 260, 0, 60)
-    notif.Position = UDim2.new(0.5, -130, 0, -80)
+    notif.Position = UDim2.new(0, -280, 1, -80)
     notif.BackgroundColor3 = Config.Colors.Card
     notif.BorderSizePixel = 0
     notif.ZIndex = 400
@@ -54,16 +54,16 @@ function Notification.send(window, options, Config, Utils)
     contentLbl.ZIndex = 401
     contentLbl.Parent = notif
     
-    local targetY = 20
-    Utils.tween(notif, {
-        Position = UDim2.new(0.5, -130, 0, targetY)
-    }, 0.25)
+    local targetPos = UDim2.new(0, 20, 1, -80)
+Utils.tween(notif, {
+    Position = targetPos
+}, 0.25)
     
     task.delay(duration, function()
         if notif and notif.Parent then
-            Utils.tween(notif, {
-                Position = UDim2.new(0.5, -130, 0, -80)
-            }, 0.25)
+    Utils.tween(notif, {
+        Position = UDim2.new(0, -280, 1, -80)
+    }, 0.25)
             task.wait(0.3)
             notif:Destroy()
         end

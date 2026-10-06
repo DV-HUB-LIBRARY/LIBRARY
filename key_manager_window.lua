@@ -11,14 +11,14 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     overlay.BackgroundColor3 = Color3.new(0, 0, 0)
     overlay.BackgroundTransparency = 0.5
     overlay.BorderSizePixel = 0
-    overlay.ZIndex = 500
+    overlay.ZIndex = 900
     
     local modal = Instance.new("Frame", overlay)
     modal.Size = UDim2.new(0, 320, 0, 420)
     modal.Position = UDim2.new(0.5, -160, 0.5, -210)
     modal.BackgroundColor3 = Config.Colors.Card
     modal.BorderSizePixel = 0
-    modal.ZIndex = 501
+    modal.ZIndex = 901
     Utils.corner(modal, Config.Sizes.Radius)
     Utils.stroke(modal, Config.Colors.Accent, 1)
     
@@ -31,7 +31,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     mTitle.TextColor3 = Config.Colors.Accent
     mTitle.TextSize = 13
     mTitle.TextXAlignment = Enum.TextXAlignment.Left
-    mTitle.ZIndex = 502
+    mTitle.ZIndex = 902
     
     local closeBtn = Instance.new("TextButton", modal)
     closeBtn.Size = UDim2.new(0, 24, 0, 24)
@@ -42,7 +42,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     closeBtn.Font = Config.Fonts.Title
     closeBtn.TextSize = 12
     closeBtn.BorderSizePixel = 0
-    closeBtn.ZIndex = 503
+    closeBtn.ZIndex = 903
     Utils.corner(closeBtn, 5)
     closeBtn.MouseButton1Click:Connect(function()
         overlay:Destroy()
@@ -52,7 +52,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     contentFrame.Size = UDim2.new(1, -28, 1, -90)
     contentFrame.Position = UDim2.new(0, 14, 0, 44)
     contentFrame.BackgroundTransparency = 1
-    contentFrame.ZIndex = 502
+    contentFrame.ZIndex = 902
     
     local cLayout = Instance.new("UIListLayout", contentFrame)
     cLayout.Padding = UDim.new(0, 8)
@@ -63,7 +63,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
         row.Size = UDim2.new(1, 0, 0, 32)
         row.BackgroundColor3 = Config.Colors.Base
         row.BorderSizePixel = 0
-        row.ZIndex = 503
+        row.ZIndex = 903
         Utils.corner(row, Config.Sizes.RadiusSmall)
         Utils.stroke(row, Config.Colors.Border, 1)
         
@@ -76,7 +76,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
         lbl.TextColor3 = Config.Colors.Muted
         lbl.TextSize = 10
         lbl.TextXAlignment = Enum.TextXAlignment.Left
-        lbl.ZIndex = 504
+        lbl.ZIndex = 904
         
         local input = Instance.new("TextBox", row)
         input.Size = UDim2.new(1, -106, 1, 0)
@@ -90,7 +90,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
         input.TextSize = 11
         input.TextXAlignment = Enum.TextXAlignment.Left
         input.ClearTextOnFocus = false
-        input.ZIndex = 504
+        input.ZIndex = 904
         
         return input
     end
@@ -112,7 +112,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     durationLabel.TextColor3 = Config.Colors.Text
     durationLabel.TextSize = 11
     durationLabel.TextXAlignment = Enum.TextXAlignment.Left
-    durationLabel.ZIndex = 503
+    durationLabel.ZIndex = 903
     durationLabel.LayoutOrder = 4
     
     local durationPicker = modules.DurationPicker.new(contentFrame, {}, Config, Utils, nil)
@@ -122,7 +122,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     btnRow.Size = UDim2.new(1, -28, 0, 34)
     btnRow.Position = UDim2.new(0, 14, 1, -44)
     btnRow.BackgroundTransparency = 1
-    btnRow.ZIndex = 502
+    btnRow.ZIndex = 902
     
     local btnLayout = Instance.new("UIListLayout", btnRow)
     btnLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -136,7 +136,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     genBtn.Font = Config.Fonts.Title
     genBtn.TextSize = 11
     genBtn.BorderSizePixel = 0
-    genBtn.ZIndex = 503
+    genBtn.ZIndex = 903
     Utils.corner(genBtn, Config.Sizes.RadiusSmall)
     
     local cancelBtn = Instance.new("TextButton", btnRow)
@@ -147,7 +147,7 @@ function KeyManagerWindow.showGenerateModalInternal(parentGui, Config, Utils, mo
     cancelBtn.Font = Config.Fonts.Title
     cancelBtn.TextSize = 11
     cancelBtn.BorderSizePixel = 0
-    cancelBtn.ZIndex = 503
+    cancelBtn.ZIndex = 903
     Utils.corner(cancelBtn, Config.Sizes.RadiusSmall)
     
     cancelBtn.MouseButton1Click:Connect(function()
@@ -208,14 +208,14 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     overlay.BackgroundColor3 = Color3.new(0, 0, 0)
     overlay.BackgroundTransparency = 0.5
     overlay.BorderSizePixel = 0
-    overlay.ZIndex = 500
+    overlay.ZIndex = 900
     
     local modal = Instance.new("Frame", overlay)
     modal.Size = UDim2.new(0, 320, 0, 380)
     modal.Position = UDim2.new(0.5, -160, 0.5, -190)
     modal.BackgroundColor3 = Config.Colors.Card
     modal.BorderSizePixel = 0
-    modal.ZIndex = 501
+    modal.ZIndex = 901
     Utils.corner(modal, Config.Sizes.Radius)
     Utils.stroke(modal, Config.Colors.Accent, 1)
     
@@ -228,7 +228,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     mTitle.TextColor3 = Config.Colors.Accent
     mTitle.TextSize = 13
     mTitle.TextXAlignment = Enum.TextXAlignment.Left
-    mTitle.ZIndex = 502
+    mTitle.ZIndex = 902
     
     local closeBtn = Instance.new("TextButton", modal)
     closeBtn.Size = UDim2.new(0, 24, 0, 24)
@@ -239,7 +239,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     closeBtn.Font = Config.Fonts.Title
     closeBtn.TextSize = 12
     closeBtn.BorderSizePixel = 0
-    closeBtn.ZIndex = 503
+    closeBtn.ZIndex = 903
     Utils.corner(closeBtn, 5)
     closeBtn.MouseButton1Click:Connect(function()
         overlay:Destroy()
@@ -254,13 +254,13 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     keyLbl.TextColor3 = Config.Colors.Muted
     keyLbl.TextSize = 10
     keyLbl.TextXAlignment = Enum.TextXAlignment.Left
-    keyLbl.ZIndex = 502
+    keyLbl.ZIndex = 902
     
     local contentFrame = Instance.new("Frame", modal)
     contentFrame.Size = UDim2.new(1, -28, 1, -140)
     contentFrame.Position = UDim2.new(0, 14, 0, 56)
     contentFrame.BackgroundTransparency = 1
-    contentFrame.ZIndex = 502
+    contentFrame.ZIndex = 902
     
     local cLayout = Instance.new("UIListLayout", contentFrame)
     cLayout.Padding = UDim.new(0, 8)
@@ -271,7 +271,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
         row.Size = UDim2.new(1, 0, 0, 32)
         row.BackgroundColor3 = Config.Colors.Base
         row.BorderSizePixel = 0
-        row.ZIndex = 503
+        row.ZIndex = 903
         Utils.corner(row, Config.Sizes.RadiusSmall)
         Utils.stroke(row, Config.Colors.Border, 1)
         
@@ -284,7 +284,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
         lbl.TextColor3 = Config.Colors.Muted
         lbl.TextSize = 10
         lbl.TextXAlignment = Enum.TextXAlignment.Left
-        lbl.ZIndex = 504
+        lbl.ZIndex = 904
         
         local input = Instance.new("TextBox", row)
         input.Size = UDim2.new(1, -106, 1, 0)
@@ -296,7 +296,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
         input.TextSize = 11
         input.TextXAlignment = Enum.TextXAlignment.Left
         input.ClearTextOnFocus = false
-        input.ZIndex = 504
+        input.ZIndex = 904
         
         return input
     end
@@ -316,7 +316,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     durationLabel.TextColor3 = Config.Colors.Text
     durationLabel.TextSize = 11
     durationLabel.TextXAlignment = Enum.TextXAlignment.Left
-    durationLabel.ZIndex = 503
+    durationLabel.ZIndex = 903
     durationLabel.LayoutOrder = 4
     
     local durationPicker = modules.DurationPicker.new(contentFrame, {}, Config, Utils, nil)
@@ -326,7 +326,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     btnRow.Size = UDim2.new(1, -28, 0, 34)
     btnRow.Position = UDim2.new(0, 14, 1, -44)
     btnRow.BackgroundTransparency = 1
-    btnRow.ZIndex = 502
+    btnRow.ZIndex = 902
     
     local btnLayout = Instance.new("UIListLayout", btnRow)
     btnLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -340,7 +340,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     saveBtn.Font = Config.Fonts.Title
     saveBtn.TextSize = 11
     saveBtn.BorderSizePixel = 0
-    saveBtn.ZIndex = 503
+    saveBtn.ZIndex = 903
     Utils.corner(saveBtn, Config.Sizes.RadiusSmall)
     
     local cancelBtn = Instance.new("TextButton", btnRow)
@@ -351,7 +351,7 @@ function KeyManagerWindow.showEditModalInternal(parentGui, Config, Utils, module
     cancelBtn.Font = Config.Fonts.Title
     cancelBtn.TextSize = 11
     cancelBtn.BorderSizePixel = 0
-    cancelBtn.ZIndex = 503
+    cancelBtn.ZIndex = 903
     Utils.corner(cancelBtn, Config.Sizes.RadiusSmall)
     
     cancelBtn.MouseButton1Click:Connect(function()
@@ -406,14 +406,14 @@ function KeyManagerWindow.showRevokeConfirmInternal(parentGui, Config, Utils, mo
     overlay.BackgroundColor3 = Color3.new(0, 0, 0)
     overlay.BackgroundTransparency = 0.5
     overlay.BorderSizePixel = 0
-    overlay.ZIndex = 600
+    overlay.ZIndex = 900
     
     local modal = Instance.new("Frame", overlay)
     modal.Size = UDim2.new(0, 300, 0, 180)
     modal.Position = UDim2.new(0.5, -150, 0.5, -90)
     modal.BackgroundColor3 = Config.Colors.Card
     modal.BorderSizePixel = 0
-    modal.ZIndex = 601
+    modal.ZIndex = 901
     Utils.corner(modal, Config.Sizes.Radius)
     Utils.stroke(modal, Config.Colors.Danger, 1)
     
@@ -426,7 +426,7 @@ function KeyManagerWindow.showRevokeConfirmInternal(parentGui, Config, Utils, mo
     closeBtn.Font = Config.Fonts.Title
     closeBtn.TextSize = 12
     closeBtn.BorderSizePixel = 0
-    closeBtn.ZIndex = 603
+    closeBtn.ZIndex = 903
     Utils.corner(closeBtn, 5)
     closeBtn.MouseButton1Click:Connect(function()
         overlay:Destroy()
@@ -441,7 +441,7 @@ function KeyManagerWindow.showRevokeConfirmInternal(parentGui, Config, Utils, mo
     t.TextColor3 = Config.Colors.Danger
     t.TextSize = 13
     t.TextXAlignment = Enum.TextXAlignment.Left
-    t.ZIndex = 602
+    t.ZIndex = 902
     
     local m = Instance.new("TextLabel", modal)
     m.Size = UDim2.new(1, -20, 0, 60)
@@ -452,13 +452,13 @@ function KeyManagerWindow.showRevokeConfirmInternal(parentGui, Config, Utils, mo
     m.TextColor3 = Config.Colors.Text
     m.TextSize = 10
     m.TextWrapped = true
-    m.ZIndex = 602
+    m.ZIndex = 902
     
     local btnRow = Instance.new("Frame", modal)
     btnRow.Size = UDim2.new(1, -20, 0, 34)
     btnRow.Position = UDim2.new(0, 10, 1, -44)
     btnRow.BackgroundTransparency = 1
-    btnRow.ZIndex = 602
+    btnRow.ZIndex = 902
     
     local layout = Instance.new("UIListLayout", btnRow)
     layout.FillDirection = Enum.FillDirection.Horizontal
@@ -472,7 +472,7 @@ function KeyManagerWindow.showRevokeConfirmInternal(parentGui, Config, Utils, mo
     okBtn.Font = Config.Fonts.Title
     okBtn.TextSize = 11
     okBtn.BorderSizePixel = 0
-    okBtn.ZIndex = 603
+    okBtn.ZIndex = 903
     Utils.corner(okBtn, Config.Sizes.RadiusSmall)
     
     local cancelBtn = Instance.new("TextButton", btnRow)
@@ -483,7 +483,7 @@ function KeyManagerWindow.showRevokeConfirmInternal(parentGui, Config, Utils, mo
     cancelBtn.Font = Config.Fonts.Title
     cancelBtn.TextSize = 11
     cancelBtn.BorderSizePixel = 0
-    cancelBtn.ZIndex = 603
+    cancelBtn.ZIndex = 903
     Utils.corner(cancelBtn, Config.Sizes.RadiusSmall)
     
     cancelBtn.MouseButton1Click:Connect(function()

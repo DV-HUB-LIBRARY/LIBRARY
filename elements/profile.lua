@@ -85,7 +85,6 @@ function Profile.new(parent, options, Config, Utils)
     local avatarStroke = Utils.stroke(avatar, initialColor, 2)
     
     local nameLbl = Instance.new("TextLabel")
-    nameLbl.Name = "NameLbl"
     nameLbl.Size = UDim2.new(1, -96, 0, 20)
     nameLbl.Position = UDim2.new(0, 88, 0, 12)
     nameLbl.BackgroundTransparency = 1
@@ -98,7 +97,6 @@ function Profile.new(parent, options, Config, Utils)
     nameLbl.Parent = card
     
     local idLbl = Instance.new("TextLabel")
-    idLbl.Name = "IdLbl"
     idLbl.Size = UDim2.new(1, -96, 0, 14)
     idLbl.Position = UDim2.new(0, 88, 0, 34)
     idLbl.BackgroundTransparency = 1
@@ -111,7 +109,6 @@ function Profile.new(parent, options, Config, Utils)
     idLbl.Parent = card
     
     local roleBadge = Instance.new("Frame")
-    roleBadge.Name = "RoleBadge"
     roleBadge.Size = UDim2.new(0, 100, 0, 22)
     roleBadge.Position = UDim2.new(0, 88, 0, 54)
     roleBadge.BackgroundColor3 = initialColor
@@ -123,7 +120,6 @@ function Profile.new(parent, options, Config, Utils)
     local badgeStroke = Utils.stroke(roleBadge, initialColor, 1)
     
     local roleLbl = Instance.new("TextLabel")
-    roleLbl.Name = "RoleLbl"
     roleLbl.Size = UDim2.new(1, -8, 1, 0)
     roleLbl.Position = UDim2.new(0, 4, 0, 0)
     roleLbl.BackgroundTransparency = 1
@@ -186,7 +182,12 @@ function Profile.new(parent, options, Config, Utils)
         end)
     end
     
-    card.SetRole = function(_, newRole)
+    -- API object, bukan method
+    local api = {}
+    
+    api.Frame = card
+    
+    api.SetRole = function(newRole)
         stopAnimation()
         role = newRole
         local newText = roleTexts[newRole] or roleTexts.unknown
@@ -201,19 +202,19 @@ function Profile.new(parent, options, Config, Utils)
         end
     end
     
-    card.SetAvatar = function(_, url)
+    api.SetAvatar = function(url)
         avatar.Image = url
     end
     
-    card.SetUsername = function(_, name)
+    api.SetUsername = function(name)
         nameLbl.Text = tostring(name)
     end
     
-    card.SetUserId = function(_, id)
+    api.SetUserId = function(id)
         idLbl.Text = "ID: " .. tostring(id)
     end
     
-    card.DestroyProfile = function()
+    api.Destroy = function()
         stopAnimation()
         card:Destroy()
     end
@@ -224,7 +225,7 @@ function Profile.new(parent, options, Config, Utils)
         startRainbow(role)
     end
     
-    return card
+    return api
 end
 
 return Profile

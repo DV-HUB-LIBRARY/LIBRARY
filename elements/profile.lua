@@ -228,5 +228,3 @@ function Profile.new(parent, options, Config, Utils)
 end
 
 return Profile
-
-tesnya gmn

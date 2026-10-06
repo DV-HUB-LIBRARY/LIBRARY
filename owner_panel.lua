@@ -187,7 +187,54 @@ function OwnerPanel.open(Config, Utils, modules)
         end
     end
     
-    -- ============ WL MANAGER ============
+    local function lookupUserId(input, callback)
+        input = tostring(input):gsub("%s", "")
+        if input == "" then
+            callback(nil)
+            return
+        end
+        
+        if input:match("^%d+$") then
+            callback(input)
+            return
+        end
+        
+        apiCall("GET", "/get?path=" .. HttpService:UrlEncode("/Whitelist"), nil, function(data)
+            if not data then
+                callback(nil)
+                return
+            end
+            
+            local target = string.lower(input)
+            for userId, info in pairs(data) do
+                if type(info) == "table" and info.Username then
+                    if string.lower(tostring(info.Username)) == target then
+                        callback(tostring(userId))
+                        return
+                    end
+                end
+            end
+            callback(nil)
+        end)
+    end
+    
+    local roleColors = {
+        owner = Config.Colors.Owner,
+        admin = Config.Colors.Admin,
+        vip = Config.Colors.VIP,
+        user = Config.Colors.User,
+    }
+    local roleIcons = {
+        owner = "👑",
+        admin = "🛡️",
+        vip = "💎",
+        user = "✅",
+        pending = "🟡",
+        expired = "⏰",
+        banned = "🚫",
+    }
+    
+    -- ============ WL ============
     local wlPage = tabPages["wl"]
     local wlScroll = Instance.new("ScrollingFrame", wlPage)
     wlScroll.Size = UDim2.new(1, -16, 1, -16)
@@ -209,22 +256,6 @@ function OwnerPanel.open(Config, Utils, modules)
     local wlLayout = Instance.new("UIListLayout", wlScroll)
     wlLayout.Padding = UDim.new(0, 6)
     wlLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    
-    local roleColors = {
-        owner = Config.Colors.Owner,
-        admin = Config.Colors.Admin,
-        vip = Config.Colors.VIP,
-        user = Config.Colors.User,
-    }
-    local roleIcons = {
-        owner = "👑",
-        admin = "🛡️",
-        vip = "💎",
-        user = "✅",
-        pending = "🟡",
-        expired = "⏰",
-        banned = "🚫",
-    }
     
     local function renderWL()
         makeClearScroll(wlScroll)
@@ -615,8 +646,8 @@ function OwnerPanel.open(Config, Utils, modules)
         overlay.ZIndex = 500
         
         local modal = Instance.new("Frame", overlay)
-        modal.Size = UDim2.new(0, 280, 0, 200)
-        modal.Position = UDim2.new(0.5, -140, 0.5, -100)
+        modal.Size = UDim2.new(0, 320, 0, 280)
+        modal.Position = UDim2.new(0.5, -160, 0.5, -140)
         modal.BackgroundColor3 = Config.Colors.Card
         modal.BorderSizePixel = 0
         modal.ZIndex = 501
@@ -638,30 +669,40 @@ function OwnerPanel.open(Config, Utils, modules)
         
         local t = Instance.new("TextLabel", modal)
         t.Size = UDim2.new(1, -60, 0, 24)
-        t.Position = UDim2.new(0, 10, 0, 10)
+        t.Position = UDim2.new(0, 10, 0, 8)
         t.BackgroundTransparency = 1
         t.Font = Config.Fonts.Title
-        t.Text = "🔨 BAN USER?"
+        t.Text = "🔨 BAN USER"
         t.TextColor3 = Config.Colors.Danger
-        t.TextSize = 13
+        t.TextSize = 12
         t.TextXAlignment = Enum.TextXAlignment.Left
         t.ZIndex = 502
         
-        local m = Instance.new("TextLabel", modal)
-        m.Size = UDim2.new(1, -20, 0, 60)
-        m.Position = UDim2.new(0, 10, 0, 40)
-        m.BackgroundTransparency = 1
-        m.Font = Config.Fonts.Body
-        m.Text = "Yakin ban " .. (info.Username or userId) .. "?"
-        m.TextColor3 = Config.Colors.Text
-        m.TextSize = 10
-        m.TextWrapped = true
-        m.TextXAlignment = Enum.TextXAlignment.Left
-        m.ZIndex = 502
+        local u = Instance.new("TextLabel", modal)
+        u.Size = UDim2.new(1, -20, 0, 14)
+        u.Position = UDim2.new(0, 10, 0, 32)
+        u.BackgroundTransparency = 1
+        u.Font = Config.Fonts.Mono
+        u.Text = info.Username or userId
+        u.TextColor3 = Config.Colors.Muted
+        u.TextSize = 9
+        u.TextXAlignment = Enum.TextXAlignment.Left
+        u.ZIndex = 502
+        
+        local reasonLbl = Instance.new("TextLabel", modal)
+        reasonLbl.Size = UDim2.new(1, -20, 0, 14)
+        reasonLbl.Position = UDim2.new(0, 10, 0, 54)
+        reasonLbl.BackgroundTransparency = 1
+        reasonLbl.Font = Config.Fonts.Title
+        reasonLbl.Text = "📝 Alasan:"
+        reasonLbl.TextColor3 = Config.Colors.Text
+        reasonLbl.TextSize = 10
+        reasonLbl.TextXAlignment = Enum.TextXAlignment.Left
+        reasonLbl.ZIndex = 502
         
         local reasonInput = Instance.new("TextBox", modal)
         reasonInput.Size = UDim2.new(1, -20, 0, 24)
-        reasonInput.Position = UDim2.new(0, 10, 0, 106)
+        reasonInput.Position = UDim2.new(0, 10, 0, 70)
         reasonInput.BackgroundColor3 = Config.Colors.Base
         reasonInput.BorderSizePixel = 0
         reasonInput.PlaceholderText = "Alasan ban..."
@@ -673,6 +714,25 @@ function OwnerPanel.open(Config, Utils, modules)
         reasonInput.ClearTextOnFocus = false
         reasonInput.ZIndex = 502
         Utils.corner(reasonInput, Config.Sizes.RadiusSmall)
+        
+        local durLbl = Instance.new("TextLabel", modal)
+        durLbl.Size = UDim2.new(1, -20, 0, 14)
+        durLbl.Position = UDim2.new(0, 10, 0, 100)
+        durLbl.BackgroundTransparency = 1
+        durLbl.Font = Config.Fonts.Title
+        durLbl.Text = "⏱️ Durasi:"
+        durLbl.TextColor3 = Config.Colors.Text
+        durLbl.TextSize = 10
+        durLbl.TextXAlignment = Enum.TextXAlignment.Left
+        durLbl.ZIndex = 502
+        
+        local durFrame = Instance.new("Frame", modal)
+        durFrame.Size = UDim2.new(1, -20, 0, 80)
+        durFrame.Position = UDim2.new(0, 10, 0, 116)
+        durFrame.BackgroundTransparency = 1
+        durFrame.ZIndex = 502
+        
+        local picker = modules.DurationPicker.new(durFrame, {}, Config, Utils, nil)
         
         local okBtn = Instance.new("TextButton", modal)
         okBtn.Size = UDim2.new(0.5, -15, 0, 30)
@@ -703,11 +763,25 @@ function OwnerPanel.open(Config, Utils, modules)
         end)
         
         okBtn.MouseButton1Click:Connect(function()
+            local durData = picker.GetValue()
+            local expiresAt = nil
+            local durationStr = "permanent"
+            
+            if durData.unit ~= "lifetime" and durData.amount > 0 then
+                local units = {
+                    menit = 60, jam = 3600, hari = 86400,
+                    bulan = 2592000, tahun = 31536000,
+                }
+                expiresAt = os.time() + (durData.amount * units[durData.unit])
+                durationStr = durData.amount .. " " .. durData.unit
+            end
+            
             local banData = {
                 banned = true,
                 Reason = reasonInput.Text ~= "" and reasonInput.Text or "Banned by admin",
-                Duration = "permanent",
+                Duration = durationStr,
                 Timestamp = os.time(),
+                ExpiresAt = expiresAt,
             }
             
             apiCall("PUT", "/put?path=" .. HttpService:UrlEncode("/Banned/" .. userId), banData, function(result)
@@ -768,7 +842,7 @@ function OwnerPanel.open(Config, Utils, modules)
         m.Position = UDim2.new(0, 10, 0, 40)
         m.BackgroundTransparency = 1
         m.Font = Config.Fonts.Body
-        m.Text = "Yakin hapus " .. (info.Username or userId) .. " dari whitelist?"
+        m.Text = "Yakin hapus " .. (info.Username or userId) .. "?"
         m.TextColor3 = Config.Colors.Text
         m.TextSize = 10
         m.TextWrapped = true
@@ -958,9 +1032,213 @@ function OwnerPanel.open(Config, Utils, modules)
     
     -- ============ BAN ============
     local banPage = tabPages["ban"]
+    
+    local banFormCard = Instance.new("Frame", banPage)
+    banFormCard.Size = UDim2.new(1, -16, 0, 118)
+    banFormCard.Position = UDim2.new(0, 8, 0, 8)
+    banFormCard.BackgroundColor3 = Config.Colors.Card
+    banFormCard.BorderSizePixel = 0
+    Utils.corner(banFormCard, Config.Sizes.RadiusSmall)
+    
+    local formTitle = Instance.new("TextLabel", banFormCard)
+    formTitle.Size = UDim2.new(1, -12, 0, 16)
+    formTitle.Position = UDim2.new(0, 6, 0, 4)
+    formTitle.BackgroundTransparency = 1
+    formTitle.Font = Config.Fonts.Title
+    formTitle.Text = "🔨 BAN MANUAL"
+    formTitle.TextColor3 = Config.Colors.Danger
+    formTitle.TextSize = 11
+    formTitle.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local targetInput = Instance.new("TextBox", banFormCard)
+    targetInput.Size = UDim2.new(0.6, -6, 0, 24)
+    targetInput.Position = UDim2.new(0, 6, 0, 24)
+    targetInput.BackgroundColor3 = Config.Colors.Base
+    targetInput.BorderSizePixel = 0
+    targetInput.PlaceholderText = "UserId / Username"
+    targetInput.PlaceholderColor3 = Config.Colors.Muted
+    targetInput.Text = ""
+    targetInput.TextColor3 = Config.Colors.Text
+    targetInput.Font = Config.Fonts.Mono
+    targetInput.TextSize = 10
+    targetInput.ClearTextOnFocus = false
+    targetInput.ZIndex = 15
+    Utils.corner(targetInput, Config.Sizes.RadiusSmall)
+    Utils.stroke(targetInput, Config.Colors.Border, 1)
+    
+    local banDurationBtn = Instance.new("TextButton", banFormCard)
+    banDurationBtn.Size = UDim2.new(0.4, -6, 0, 24)
+    banDurationBtn.Position = UDim2.new(0.6, 0, 0, 24)
+    banDurationBtn.BackgroundColor3 = Config.Colors.Base
+    banDurationBtn.Text = "♾️ Permanent ▾"
+    banDurationBtn.TextColor3 = Config.Colors.Text
+    banDurationBtn.Font = Config.Fonts.Body
+    banDurationBtn.TextSize = 10
+    banDurationBtn.BorderSizePixel = 0
+    banDurationBtn.AutoButtonColor = false
+    banDurationBtn.ZIndex = 15
+    Utils.corner(banDurationBtn, Config.Sizes.RadiusSmall)
+    Utils.stroke(banDurationBtn, Config.Colors.Border, 1)
+    
+    local reasonInput = Instance.new("TextBox", banFormCard)
+    reasonInput.Size = UDim2.new(1, -12, 0, 24)
+    reasonInput.Position = UDim2.new(0, 6, 0, 52)
+    reasonInput.BackgroundColor3 = Config.Colors.Base
+    reasonInput.BorderSizePixel = 0
+    reasonInput.PlaceholderText = "Reason (opsional)"
+    reasonInput.PlaceholderColor3 = Config.Colors.Muted
+    reasonInput.Text = ""
+    reasonInput.TextColor3 = Config.Colors.Text
+    reasonInput.Font = Config.Fonts.Body
+    reasonInput.TextSize = 10
+    reasonInput.ClearTextOnFocus = false
+    reasonInput.ZIndex = 15
+    Utils.corner(reasonInput, Config.Sizes.RadiusSmall)
+    Utils.stroke(reasonInput, Config.Colors.Border, 1)
+    
+    local banSubmitBtn = Instance.new("TextButton", banFormCard)
+    banSubmitBtn.Size = UDim2.new(1, -12, 0, 28)
+    banSubmitBtn.Position = UDim2.new(0, 6, 0, 82)
+    banSubmitBtn.BackgroundColor3 = Config.Colors.Danger
+    banSubmitBtn.Text = "🔨 BAN USER"
+    banSubmitBtn.TextColor3 = Config.Colors.Text
+    banSubmitBtn.Font = Config.Fonts.Title
+    banSubmitBtn.TextSize = 11
+    banSubmitBtn.BorderSizePixel = 0
+    banSubmitBtn.ZIndex = 15
+    Utils.corner(banSubmitBtn, Config.Sizes.RadiusSmall)
+    
+    local selectedBanDuration = { value = "permanent", label = "♾️ Permanent" }
+    
+    banDurationBtn.MouseButton1Click:Connect(function()
+        local overlay = Instance.new("Frame", gui)
+        overlay.Size = UDim2.new(1, 0, 1, 0)
+        overlay.BackgroundColor3 = Color3.new(0, 0, 0)
+        overlay.BackgroundTransparency = 0.5
+        overlay.BorderSizePixel = 0
+        overlay.ZIndex = 700
+        
+        local modal = Instance.new("Frame", overlay)
+        modal.Size = UDim2.new(0, 260, 0, 260)
+        modal.Position = UDim2.new(0.5, -130, 0.5, -130)
+        modal.BackgroundColor3 = Config.Colors.Card
+        modal.BorderSizePixel = 0
+        modal.ZIndex = 701
+        Utils.corner(modal, Config.Sizes.Radius)
+        Utils.stroke(modal, Config.Colors.Danger, 1)
+        
+        local closeX = Instance.new("TextButton", modal)
+        closeX.Size = UDim2.new(0, 22, 0, 22)
+        closeX.Position = UDim2.new(1, -28, 0, 8)
+        closeX.BackgroundColor3 = Config.Colors.Danger
+        closeX.Text = "✕"
+        closeX.TextColor3 = Config.Colors.Text
+        closeX.Font = Config.Fonts.Title
+        closeX.TextSize = 11
+        closeX.BorderSizePixel = 0
+        closeX.ZIndex = 703
+        Utils.corner(closeX, 5)
+        closeX.MouseButton1Click:Connect(function() overlay:Destroy() end)
+        
+        local t = Instance.new("TextLabel", modal)
+        t.Size = UDim2.new(1, -60, 0, 22)
+        t.Position = UDim2.new(0, 10, 0, 8)
+        t.BackgroundTransparency = 1
+        t.Font = Config.Fonts.Title
+        t.Text = "⏱️ PILIH DURASI"
+        t.TextColor3 = Config.Colors.Danger
+        t.TextSize = 12
+        t.TextXAlignment = Enum.TextXAlignment.Left
+        t.ZIndex = 702
+        
+        local options = {
+            { value = "permanent", label = "♾️ Permanent" },
+            { value = "1 jam", label = "⏱️ 1 Jam" },
+            { value = "24 jam", label = "⏱️ 24 Jam" },
+            { value = "7 hari", label = "📅 7 Hari" },
+            { value = "30 hari", label = "📅 30 Hari" },
+            { value = "90 hari", label = "📅 90 Hari" },
+        }
+        
+        local y = 38
+        for _, opt in ipairs(options) do
+            local b = Instance.new("TextButton", modal)
+            b.Size = UDim2.new(1, -20, 0, 30)
+            b.Position = UDim2.new(0, 10, 0, y)
+            b.BackgroundColor3 = (selectedBanDuration.value == opt.value) and Config.Colors.Danger or Config.Colors.Base
+            b.Text = opt.label
+            b.TextColor3 = Config.Colors.Text
+            b.Font = Config.Fonts.Title
+            b.TextSize = 11
+            b.BorderSizePixel = 0
+            b.ZIndex = 702
+            Utils.corner(b, Config.Sizes.RadiusSmall)
+            
+            b.MouseButton1Click:Connect(function()
+                selectedBanDuration.value = opt.value
+                selectedBanDuration.label = opt.label
+                banDurationBtn.Text = opt.label .. " ▾"
+                overlay:Destroy()
+            end)
+            
+            y = y + 34
+        end
+    end)
+    
+    banSubmitBtn.MouseButton1Click:Connect(function()
+        local target = targetInput.Text:gsub("%s", "")
+        if target == "" then
+            notify("⚠️ Warning", "Isi UserId/Username", 3)
+            return
+        end
+        
+        notify("⏳ Loading", "Mencari user...", 2)
+        
+        lookupUserId(target, function(foundUserId)
+            if not foundUserId then
+                notify("❌ Not Found", "User gak ketemu di WL", 3)
+                return
+            end
+            
+            local banData = {
+                banned = true,
+                Reason = reasonInput.Text ~= "" and reasonInput.Text or "Banned by admin",
+                Duration = selectedBanDuration.value,
+                Timestamp = os.time(),
+            }
+            
+            if selectedBanDuration.value ~= "permanent" then
+                local durations = {
+                    ["1 jam"] = 3600,
+                    ["24 jam"] = 86400,
+                    ["7 hari"] = 604800,
+                    ["30 hari"] = 2592000,
+                    ["90 hari"] = 7776000,
+                }
+                local sec = durations[selectedBanDuration.value]
+                if sec then
+                    banData.ExpiresAt = os.time() + sec
+                end
+            end
+            
+            apiCall("PUT", "/put?path=" .. HttpService:UrlEncode("/Banned/" .. foundUserId), banData, function(r1)
+                if r1 and r1.ok then
+                    apiCall("PUT", "/put?path=" .. HttpService:UrlEncode("/Whitelist/" .. foundUserId), nil, function()
+                        notify("🔨 Banned", target .. " (" .. foundUserId .. ")", 3)
+                        targetInput.Text = ""
+                        reasonInput.Text = ""
+                        renderBan()
+                    end)
+                else
+                    notify("❌ Gagal", "Coba lagi", 3)
+                end
+            end)
+        end)
+    end)
+    
     local banScroll = Instance.new("ScrollingFrame", banPage)
-    banScroll.Size = UDim2.new(1, -16, 1, -16)
-    banScroll.Position = UDim2.new(0, 8, 0, 8)
+    banScroll.Size = UDim2.new(1, -16, 1, -134)
+    banScroll.Position = UDim2.new(0, 8, 0, 134)
     banScroll.BackgroundColor3 = Config.Colors.Card
     banScroll.BorderSizePixel = 0
     banScroll.ScrollBarThickness = 4
